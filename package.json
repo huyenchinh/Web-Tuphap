@@ -1,0 +1,9 @@
+{
+  "name": "web-tuphap-vietnam",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "dev": "npm --prefix backend start & npm --prefix frontend run dev"
+  }
+}

@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+*/node_modules/
+.pnp
+.pnp.js
+agentkit/
+.agentkit/
+
+# Environment and Secret Credential Files - STRICTLY IGNORED
+.env
+.env.*
+*.env
+.ven
+.ven.*
+*.ven
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# Build outputs
+dist/
+build/
+*/dist/
+*/build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Storage Generated temporary files
+backend/storage/generated/*
+!backend/storage/generated/.gitkeep
+
+# IDE configs
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
