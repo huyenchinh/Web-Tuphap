@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { 
   Plus, Edit3, Trash2, Upload, FileText, Check, AlertCircle, 
   Layers, Shield, Search, Sparkles, Save, X, Eye, FileUp, Loader2,
