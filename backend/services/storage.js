@@ -525,6 +525,22 @@ class StorageService {
   getSubmissions() {
     return this.data.submissions || [];
   }
+
+  addTaxSubmission(taxData) {
+    if (!this.data.taxSubmissions) this.data.taxSubmissions = [];
+    const entry = {
+      id: "TAX-" + Date.now().toString().slice(-6),
+      createdAt: new Date().toISOString(),
+      ...taxData
+    };
+    this.data.taxSubmissions.unshift(entry);
+    this.saveData();
+    return entry;
+  }
+
+  getTaxSubmissions() {
+    return this.data.taxSubmissions || [];
+  }
 }
 
 module.exports = new StorageService();

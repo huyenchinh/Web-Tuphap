@@ -5,15 +5,17 @@ import DocumentWizard from './components/DocumentWizard';
 import AdminPortal from './components/AdminPortal';
 import LookupPage from './components/LookupPage';
 import LegalGuidePage from './components/LegalGuidePage';
+import TaxFilingPage from './components/TaxFilingPage';
 import SettingsModal from './components/SettingsModal';
 import HistoryModal from './components/HistoryModal';
 import { api } from './services/api';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('catalog'); // 'catalog' | 'wizard' | 'lookup' | 'guide' | 'admin'
+  const [activeTab, setActiveTab] = useState('catalog'); // 'catalog' | 'wizard' | 'tax' | 'lookup' | 'guide' | 'admin'
   const [categories, setCategories] = useState([]);
   const [selectedProcedureId, setSelectedProcedureId] = useState(null);
+  const [prefillTaxData, setPrefillTaxData] = useState(null);
   const [settings, setSettings] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -46,6 +48,12 @@ export default function App() {
   const handleSelectProcedure = (procedureId) => {
     setSelectedProcedureId(procedureId);
     setActiveTab('wizard');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateToTax = (contractData) => {
+    setPrefillTaxData(contractData);
+    setActiveTab('tax');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -91,6 +99,7 @@ export default function App() {
                   setActiveTab('catalog');
                 }}
                 onShowSuccessToast={showToast}
+                onNavigateToTax={handleNavigateToTax}
               />
             ) : (
               <div className="max-w-4xl mx-auto px-4 py-16 text-center">
@@ -104,6 +113,19 @@ export default function App() {
                 </button>
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === 'tax' && (
+          <div className="animate-page-enter">
+            <TaxFilingPage
+              prefillContractData={prefillTaxData}
+              onBackToWizard={() => {
+                if (selectedProcedureId) setActiveTab('wizard');
+                else setActiveTab('catalog');
+              }}
+              onShowToast={showToast}
+            />
           </div>
         )}
 

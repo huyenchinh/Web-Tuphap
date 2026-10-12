@@ -50,3 +50,5 @@ backend/storage/generated/*
 *.njsproj
 *.sln
 *.sw?
+
+.vercel

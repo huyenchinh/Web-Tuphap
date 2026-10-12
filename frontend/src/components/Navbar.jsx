@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Scale, Settings, ShieldCheck, History, Sparkles, LayoutGrid, 
-  FileText, Search, BookOpen, Menu, X, ChevronRight
+  FileText, Search, BookOpen, Menu, X, ChevronRight, Receipt
 } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab, onOpenSettings, onOpenHistory, settings, hasActiveProcedure }) {
@@ -10,6 +10,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenSettings, onOpen
   const navItems = [
     { id: 'catalog', label: 'Dịch vụ công', icon: LayoutGrid },
     { id: 'wizard', label: 'Tạo đơn hợp đồng', icon: FileText, hidden: !hasActiveProcedure },
+    { id: 'tax', label: 'Khai thuế Online', icon: Receipt },
     { id: 'lookup', label: 'Tra cứu & QR', icon: Search },
     { id: 'guide', label: 'Cẩm nang pháp lý', icon: BookOpen },
     { id: 'admin', label: 'Quản trị Admin', icon: ShieldCheck }

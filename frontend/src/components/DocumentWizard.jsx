@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowLeft, Download, Printer, Copy, Sparkles, Check, RefreshCw, 
   Eye, FileText, AlertCircle, ShieldAlert, CheckCircle2, ChevronRight, ChevronLeft, 
-  Loader2, ZoomIn, ZoomOut, Maximize2, Minimize2, Wand2
+  Loader2, ZoomIn, ZoomOut, Maximize2, Minimize2, Wand2, Receipt
 } from 'lucide-react';
 import { api } from '../services/api';
 
-export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast }) {
+export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast, onNavigateToTax }) {
   const [procedure, setProcedure] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({});
@@ -418,14 +418,26 @@ export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast
                 <ChevronRight className="w-4 h-4" />
               </button>
             ) : (
-              <button
-                onClick={handleExportDocx}
-                disabled={exportLoading}
-                className="flex items-center gap-1.5 px-6 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-md shadow-emerald-600/20 transition-all active:scale-95"
-              >
-                <Download className="w-4 h-4" />
-                <span>Hoàn tất & Xuất Word</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleExportDocx}
+                  disabled={exportLoading}
+                  className="flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-md shadow-emerald-600/20 transition-all active:scale-95"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Xuất Word (.docx)</span>
+                </button>
+                {onNavigateToTax && (
+                  <button
+                    onClick={() => onNavigateToTax(formData)}
+                    className="flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 rounded-xl shadow-md shadow-emerald-600/20 transition-all active:scale-95"
+                    title="Chuyển dữ liệu hợp đồng này sang Tờ khai thuế TNCN và Lệ phí trước bạ"
+                  >
+                    <Receipt className="w-4 h-4" />
+                    <span>Khai thuế ngay</span>
+                  </button>
+                )}
+              </div>
             )}
           </div>
         </div>

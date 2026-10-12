@@ -204,6 +204,59 @@ app.get('/api/submissions', (req, res) => {
   }
 });
 
+// Tax Declaration & Calculation APIs
+app.post('/api/tax/calculate', (req, res) => {
+  try {
+    const { type, contractPrice, landArea, statePricePerM2, kinship, vehicleYears, vehicleType, rentalMonthlyRevenue } = req.body;
+    let result = {};
+
+    if (type === 'bds-chuyen-nhuong') {
+      const stateLandVal = (Number(landArea) || 0) * (Number(statePricePerM2) || 0);
+      const taxBase = Math.max(Number(contractPrice) || 0, stateLandVal);
+      const thueTNCN = taxBase * 0.02;
+      const lePhiTruocBa = taxBase * 0.005;
+      const phiThamDinh = Math.min(5000000, Math.max(500000, Math.round(taxBase * 0.0015)));
+      result = {
+        taxBase,
+        thueTNCN,
+        lePhiTruocBa,
+        phiThamDinh,
+        totalPayable: thueTNCN + lePhiTruocBa + phiThamDinh + 100000
+      };
+    } else if (type === 'bds-tang-cho') {
+      const isMien = ['vo_chong', 'cha_me_con', 'ong_ba_chau', 'anh_chi_em'].includes(kinship);
+      result = {
+        isMien,
+        thueTNCN: isMien ? 0 : (Number(contractPrice) - 10000000) * 0.1,
+        lePhiTruocBa: isMien ? 0 : Number(contractPrice) * 0.005,
+        totalPayable: isMien ? 1100000 : ((Number(contractPrice) - 10000000) * 0.1 + Number(contractPrice) * 0.005 + 1100000)
+      };
+    }
+
+    res.json({ success: true, data: result });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/tax/submit', (req, res) => {
+  try {
+    const entry = storage.addTaxSubmission(req.body);
+    res.json({ success: true, data: entry, message: 'Nộp tờ khai thuế thành công!' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.get('/api/tax/submissions', (req, res) => {
+  try {
+    const list = storage.getTaxSubmissions();
+    res.json({ success: true, data: list });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // AI Settings
 app.get('/api/settings', (req, res) => {
   try {

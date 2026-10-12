@@ -335,5 +335,60 @@ export const api = {
       }
     } catch (err) {}
     return [];
+  },
+
+  // Tax APIs
+  async calculateTax(params) {
+    try {
+      const res = await fetch(`${API_BASE}/tax/calculate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success) return json.data;
+      }
+    } catch (err) {}
+    return null;
+  },
+
+  async submitTaxDeclaration(taxData) {
+    try {
+      const res = await fetch(`${API_BASE}/tax/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(taxData)
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success) return json.data;
+      }
+    } catch (err) {}
+
+    // Fallback: save to localStorage
+    const saved = localStorage.getItem('tuphap_tax_submissions');
+    const list = saved ? JSON.parse(saved) : [];
+    const entry = {
+      id: "TAX-" + Date.now().toString().slice(-6),
+      createdAt: new Date().toISOString(),
+      ...taxData
+    };
+    list.unshift(entry);
+    localStorage.setItem('tuphap_tax_submissions', JSON.stringify(list));
+    return entry;
+  },
+
+  async getTaxSubmissions() {
+    try {
+      const res = await fetch(`${API_BASE}/tax/submissions`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success) return json.data;
+      }
+    } catch (err) {}
+
+    const saved = localStorage.getItem('tuphap_tax_submissions');
+    return saved ? JSON.parse(saved) : [];
   }
 };
