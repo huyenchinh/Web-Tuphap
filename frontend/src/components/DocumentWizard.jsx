@@ -29,8 +29,11 @@ export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast
   const [ocrTargetGroup, setOcrTargetGroup] = useState('bena'); // 'bena' | 'benb' | 'taisan'
   const [ocrExtractedData, setOcrExtractedData] = useState(null);
 
-  // Certification Type according to Circular 01/2020/TT-BTP
-  const [certificationType, setCertificationType] = useState('tu_ky'); // 'tu_ky' | 'diem_chi' | 'nguoi_lam_chung' | 'phien_dich'
+  // Certification Type according to Government Decree 280/2025/NĐ-CP (effective from Nov 1, 2025)
+  const [certificationType, setCertificationType] = useState('mau_09'); 
+  const [hinhThucKy, setHinhThucKy] = useState('ký'); // 'ký' | 'điểm chỉ' | 'ký và điểm chỉ'
+  const [coNguoiLamChung, setCoNguoiLamChung] = useState(false);
+  const [coNguoiPhienDich, setCoNguoiPhienDich] = useState(false);
 
   const previewDebounceRef = useRef(null);
 
@@ -42,11 +45,22 @@ export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast
         const data = await api.getProcedure(procedureId);
         setProcedure(data);
 
-        // Pre-fill initial form values
+        // Pre-fill initial form values with Decree 280/2025/NĐ-CP standards
+        const defaultCert = data.category === 'thua-ke' 
+          ? (data.id.includes('di-chuc') ? 'mau_17' : (data.id.includes('tu-choi') ? 'mau_13' : 'mau_11'))
+          : 'mau_09';
+        setCertificationType(defaultCert);
+
         const initial = {
           procedureTitle: data.title,
           so_hop_dong: `TP-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
-          co_quan_chung_thuc: 'xã Tiền Phong, huyện Mê Linh, thành phố Hà Nội'
+          co_quan_chung_thuc: 'Ủy ban nhân dân cấp xã',
+          dia_diem_chung_thuc: 'trụ sở Ủy ban nhân dân cấp xã',
+          loi_chung_loai: defaultCert,
+          hinh_thuc_ky: 'ký',
+          so_ban_goc: '03',
+          so_to: '02',
+          so_trang: '03'
         };
         (data.fields || []).forEach(f => {
           initial[f.key] = '';
@@ -550,25 +564,263 @@ export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast
               );
             })}
 
-            {/* Circular 01/2020/TT-BTP Certification Selector */}
+            {/* Decree 280/2025/NĐ-CP Certification Configurator */}
             {currentStepData?.id === 'dieuphap' && (
-              <div className="mt-4 p-4 bg-blue-50/60 border border-blue-200/90 rounded-2xl space-y-2">
-                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <Scale className="w-4 h-4 text-blue-600" />
-                  <span>Hình thức Lời chứng tư pháp (Thông tư 01/2020/TT-BTP)</span>
-                </label>
-                <select
-                  value={certificationType}
-                  onChange={(e) => setCertificationType(e.target.value)}
-                  className="w-full text-xs sm:text-sm bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="tu_ky">Mẫu 01: Các bên tự ký trước mặt người thực hiện chứng thực</option>
-                  <option value="diem_chi">Mẫu 02: Người yêu cầu điểm chỉ (không biết chữ/không ký được)</option>
-                  <option value="nguoi_lam_chung">Mẫu 03: Có người làm chứng theo Điều 36 Nghị định 23/2015</option>
-                  <option value="phien_dich">Mẫu 04: Có người phiên dịch (người yêu cầu không thạo tiếng Việt)</option>
-                </select>
-                <p className="text-[11px] text-slate-500 leading-relaxed">
-                  Hệ thống tự động đồng bộ mẫu lời chứng chuẩn của Bộ Tư pháp và quy cách ký tên/điểm chỉ tương ứng vào trang cuối của văn bản Word và bản in PDF.
+              <div className="mt-6 p-5 bg-gradient-to-br from-blue-50/90 via-indigo-50/50 to-slate-50 border border-blue-200 rounded-2xl space-y-4 shadow-sm">
+                <div className="flex items-center justify-between pb-3 border-b border-blue-200/80">
+                  <label className="text-xs font-bold text-blue-950 uppercase tracking-wider flex items-center gap-2">
+                    <Scale className="w-4 h-4 text-blue-600" />
+                    <span>Mẫu Lời Chứng Tư Pháp Mới Nhất (Nghị định số 280/2025/NĐ-CP)</span>
+                  </label>
+                  <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-blue-600 text-white shadow-xs">
+                    Áp dụng từ 01/11/2025
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Select certification model */}
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                      Mẫu Lời Chứng (Phụ lục Nghị định 280/2025)
+                    </label>
+                    <select
+                      value={formData.loi_chung_loai || certificationType}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setCertificationType(val);
+                        handleFieldChange('loi_chung_loai', val);
+                      }}
+                      className="w-full text-xs sm:text-sm bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                    >
+                      <option value="mau_09">Mẫu 09: Chứng thực giao dịch (UBND xã / VP Công chứng)</option>
+                      <option value="mau_10">Mẫu 10: Chứng thực giao dịch tại Trung tâm Hành chính công</option>
+                      <option value="mau_11">Mẫu 11: Chứng thực văn bản phân chia di sản</option>
+                      <option value="mau_13">Mẫu 13: Chứng thực văn bản từ chối nhận di sản</option>
+                      <option value="mau_17">Mẫu 17: Chứng thực di chúc</option>
+                      <option value="mau_02">Mẫu 02: Chứng thực chữ ký của một người</option>
+                      <option value="mau_06">Mẫu 06: Chứng thực điểm chỉ</option>
+                    </select>
+                  </div>
+
+                  {/* Signing Method */}
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                      Phương thức thực hiện (Ghi chú khoản 8)
+                    </label>
+                    <select
+                      value={formData.hinh_thuc_ky || hinhThucKy}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setHinhThucKy(val);
+                        handleFieldChange('hinh_thuc_ky', val);
+                      }}
+                      className="w-full text-xs sm:text-sm bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                    >
+                      <option value="ký">Ký tên</option>
+                      <option value="điểm chỉ">Điểm chỉ (lăn tay)</option>
+                      <option value="ký và điểm chỉ">Cả ký và điểm chỉ</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Authority & Location Details */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                      Cơ quan thực hiện chứng thực
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.co_quan_chung_thuc || 'Ủy ban nhân dân cấp xã'}
+                      onChange={(e) => handleFieldChange('co_quan_chung_thuc', e.target.value)}
+                      placeholder="VD: Ủy ban nhân dân xã Tiền Phong..."
+                      className="w-full text-xs sm:text-sm bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                      Địa điểm chứng thực (Ghi chú 2)
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.dia_diem_chung_thuc || 'trụ sở Ủy ban nhân dân cấp xã'}
+                      onChange={(e) => handleFieldChange('dia_diem_chung_thuc', e.target.value)}
+                      placeholder="VD: trụ sở UBND xã Tiền Phong..."
+                      className="w-full text-xs sm:text-sm bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                    />
+                  </div>
+                </div>
+
+                {/* Copies count & Book Code Tag */}
+                <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-white/80 border border-blue-100 rounded-xl">
+                  <div className="flex items-center gap-4 text-xs text-slate-700 font-medium">
+                    <span className="flex items-center gap-1.5">
+                      <span>Lập thành:</span>
+                      <input
+                        type="text"
+                        value={formData.so_ban_goc || '03'}
+                        onChange={(e) => handleFieldChange('so_ban_goc', e.target.value)}
+                        className="w-12 text-center py-0.5 border border-slate-300 rounded font-bold"
+                      />
+                      <span>bản gốc</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span>Gồm:</span>
+                      <input
+                        type="text"
+                        value={formData.so_to || '02'}
+                        onChange={(e) => handleFieldChange('so_to', e.target.value)}
+                        className="w-10 text-center py-0.5 border border-slate-300 rounded font-bold"
+                      />
+                      <span>tờ,</span>
+                      <input
+                        type="text"
+                        value={formData.so_trang || '03'}
+                        onChange={(e) => handleFieldChange('so_trang', e.target.value)}
+                        className="w-10 text-center py-0.5 border border-slate-300 rounded font-bold"
+                      />
+                      <span>trang</span>
+                    </span>
+                  </div>
+                  <div className="text-[11px] font-bold text-blue-900 bg-blue-100/80 px-2.5 py-1 rounded-md">
+                    Sổ theo dõi chuẩn: <span className="font-mono text-red-600">-SCT/GD</span>
+                  </div>
+                </div>
+
+                {/* Conditional Toggle: Người làm chứng (*) */}
+                <div className="pt-2 border-t border-slate-200">
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
+                    <input
+                      type="checkbox"
+                      checked={coNguoiLamChung || formData.co_nguoi_lam_chung || false}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        setCoNguoiLamChung(checked);
+                        handleFieldChange('co_nguoi_lam_chung', checked);
+                      }}
+                      className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                    />
+                    <span>Trường hợp có người làm chứng (*) theo Nghị định 280/2025</span>
+                  </label>
+
+                  {(coNguoiLamChung || formData.co_nguoi_lam_chung) && (
+                    <div className="mt-3 p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-2 text-xs">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-[10px] font-bold text-amber-900 uppercase">Họ và tên người làm chứng</label>
+                          <input
+                            type="text"
+                            value={formData.nguoi_lam_chung_ten || ''}
+                            onChange={(e) => handleFieldChange('nguoi_lam_chung_ten', e.target.value)}
+                            placeholder="Nguyễn Văn A..."
+                            className="w-full px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-bold text-amber-900 uppercase">Số Căn cước / Giấy tờ tùy thân</label>
+                          <input
+                            type="text"
+                            value={formData.nguoi_lam_chung_cccd || ''}
+                            onChange={(e) => handleFieldChange('nguoi_lam_chung_cccd', e.target.value)}
+                            placeholder="001095000000"
+                            className="w-full px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-xs"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-[10px] font-bold text-amber-900 uppercase">Ngày cấp & Nơi cấp</label>
+                          <input
+                            type="text"
+                            value={formData.nguoi_lam_chung_ngay_cap || ''}
+                            onChange={(e) => handleFieldChange('nguoi_lam_chung_ngay_cap', e.target.value)}
+                            placeholder="01/01/2024 - Cục CSQLHC về TTXH"
+                            className="w-full px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-bold text-amber-900 uppercase">Lý do phải có người làm chứng</label>
+                          <input
+                            type="text"
+                            value={formData.nguoi_lam_chung_ly_do || ''}
+                            onChange={(e) => handleFieldChange('nguoi_lam_chung_ly_do', e.target.value)}
+                            placeholder="Người yêu cầu không tự đọc/ký được..."
+                            className="w-full px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-xs"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Conditional Toggle: Người phiên dịch (**) */}
+                <div className="pt-2 border-t border-slate-200">
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
+                    <input
+                      type="checkbox"
+                      checked={coNguoiPhienDich || formData.co_nguoi_phien_dich || false}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        setCoNguoiPhienDich(checked);
+                        handleFieldChange('co_nguoi_phien_dich', checked);
+                      }}
+                      className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                    />
+                    <span>Trường hợp có người phiên dịch (**) theo Nghị định 280/2025</span>
+                  </label>
+
+                  {(coNguoiPhienDich || formData.co_nguoi_phien_dich) && (
+                    <div className="mt-3 p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-2 text-xs">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-[10px] font-bold text-emerald-900 uppercase">Họ và tên người phiên dịch</label>
+                          <input
+                            type="text"
+                            value={formData.nguoi_phien_dich_ten || ''}
+                            onChange={(e) => handleFieldChange('nguoi_phien_dich_ten', e.target.value)}
+                            placeholder="Trần Thị B..."
+                            className="w-full px-2.5 py-1.5 bg-white border border-emerald-300 rounded-lg text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-bold text-emerald-900 uppercase">Số Căn cước / Giấy tờ tùy thân</label>
+                          <input
+                            type="text"
+                            value={formData.nguoi_phien_dich_cccd || ''}
+                            onChange={(e) => handleFieldChange('nguoi_phien_dich_cccd', e.target.value)}
+                            placeholder="001096000000"
+                            className="w-full px-2.5 py-1.5 bg-white border border-emerald-300 rounded-lg text-xs"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-[10px] font-bold text-emerald-900 uppercase">Ngày cấp & Nơi cấp</label>
+                          <input
+                            type="text"
+                            value={formData.nguoi_phien_dich_ngay_cap || ''}
+                            onChange={(e) => handleFieldChange('nguoi_phien_dich_ngay_cap', e.target.value)}
+                            placeholder="01/01/2024 - Cục CSQLHC về TTXH"
+                            className="w-full px-2.5 py-1.5 bg-white border border-emerald-300 rounded-lg text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-bold text-emerald-900 uppercase">Lý do phải có người phiên dịch</label>
+                          <input
+                            type="text"
+                            value={formData.nguoi_phien_dich_ly_do || ''}
+                            onChange={(e) => handleFieldChange('nguoi_phien_dich_ly_do', e.target.value)}
+                            placeholder="Người yêu cầu không thạo tiếng Việt..."
+                            className="w-full px-2.5 py-1.5 bg-white border border-emerald-300 rounded-lg text-xs"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <p className="text-[11px] text-slate-500 leading-relaxed italic pt-1">
+                  Đã đồng bộ tự động chuẩn Phụ lục Nghị định số 280/2025/NĐ-CP (có hiệu lực từ 01/11/2025) vào văn bản Word (.docx) và bản xem trước thời gian thực.
                 </p>
               </div>
             )}

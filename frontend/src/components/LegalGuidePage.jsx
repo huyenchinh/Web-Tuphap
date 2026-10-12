@@ -32,14 +32,14 @@ export default function LegalGuidePage({ onStartProcedure }) {
 
   const laws = [
     {
-      title: "Nghị định số 23/2015/NĐ-CP & NĐ 280/2025/NĐ-CP",
-      desc: "Quy định về cấp bản sao từ sổ gốc, chứng thực bản sao từ bản chính, chứng thực chữ ký và chứng thực hợp đồng, giao dịch.",
-      tag: "Văn bản nền tảng"
+      title: "Nghị định số 280/2025/NĐ-CP (Mới nhất 27/10/2025)",
+      desc: "Sửa đổi, bổ sung Nghị định 23/2015/NĐ-CP, ban hành Phụ lục Mẫu lời chứng mới nhất (Mẫu 01 đến 18) và chuẩn hóa sổ theo dõi (-SCT/GD, -SCT/CK,ĐC).",
+      tag: "Lời chứng mới nhất"
     },
     {
-      title: "Thông tư số 01/2020/TT-BTP của Bộ Tư pháp",
-      desc: "Quy định chi tiết mẫu lời chứng chứng thực hợp đồng, giao dịch và mẫu sổ theo dõi chứng thực tại UBND cấp xã.",
-      tag: "Biểu mẫu & Lời chứng"
+      title: "Nghị định số 23/2015/NĐ-CP của Chính phủ",
+      desc: "Quy định căn bản về cấp bản sao từ sổ gốc, chứng thực bản sao từ bản chính, chứng thực chữ ký và chứng thực giao dịch.",
+      tag: "Văn bản nền tảng"
     },
     {
       title: "Bộ luật Dân sự 2015",

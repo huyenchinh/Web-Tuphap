@@ -6,8 +6,8 @@
 ---
 
 ## 🏛️ Căn Cứ Pháp Lý Áp Dụng
-- **Nghị định số 23/2015/NĐ-CP** & **Nghị định số 280/2025/NĐ-CP**: Quy định về cấp bản sao từ sổ gốc, chứng thực bản sao từ bản chính, chứng thực chữ ký và chứng thực hợp đồng, giao dịch.
-- **Thông tư số 01/2020/TT-BTP**: Quy định chi tiết và hướng dẫn thi hành Nghị định 23/2015/NĐ-CP (mẫu lời chứng, mẫu sổ chứng thực).
+- **Nghị định số 280/2025/NĐ-CP** (Chính phủ ban hành 27/10/2025, có hiệu lực từ 01/11/2025): Sửa đổi bổ sung NĐ 23/2015/NĐ-CP, **thay thế toàn bộ Phụ lục Mẫu lời chứng và Mẫu sổ chứng thực** mới nhất (Mẫu 01 đến Mẫu 18, mã sổ chuẩn `-SCT/GD`, `-SCT/CK,ĐC`).
+- **Nghị định số 23/2015/NĐ-CP**: Quy định về cấp bản sao từ sổ gốc, chứng thực bản sao từ bản chính, chứng thực chữ ký và chứng thực hợp đồng, giao dịch.
 - **Bộ luật Dân sự 2015**: Quy định về hợp đồng, tài sản, di chúc và thừa kế.
 - **Luật Đất đai 2024** & **Luật Nhà ở 2023**: Điều kiện có hiệu lực đối với giao dịch bất động sản.
 - **Nghị định số 30/2020/NĐ-CP**: Quy định về thể thức và kỹ thuật trình bày văn bản hành chính (font Times New Roman, căn lề 2-2-3-2 cm).
@@ -33,7 +33,7 @@
 - **AI Vision OCR (Quét Giấy Tờ Tự Động)**: Tự động trích xuất thông tin từ CCCD 2 mặt, Sổ đỏ (GCN QSDĐ), Đăng ký xe và tự động điền form Wizard tức thì.
 - **Máy Tính Án Phí & Lệ Phí Tòa Án**: Tính toán tự động tiền tạm ứng án phí (50%), án phí sơ thẩm và phúc thẩm theo Nghị quyết 326/2016/UBTVQH14.
 - **Cây Quyết Định Chẩn Đoán Thẩm Quyền**: Khảo sát trắc nghiệm 3 bước xác định cơ quan thụ lý (UBND xã hay TAND), thời hạn giải quyết và hồ sơ cần chuẩn bị.
-- **Lời Chứng Tư Pháp Tự Động Hóa**: Hỗ trợ 4 mẫu lời chứng theo Thông tư 01/2020/TT-BTP (Tự ký, Điểm chỉ, Có người làm chứng, Có người phiên dịch).
+- **Lời Chứng Tư Pháp Tự Động Hóa (Nghị định 280/2025/NĐ-CP Mới Nhất)**: Hỗ trợ đầy đủ các biểu mẫu chuẩn Mẫu số 09 (Chứng thực giao dịch), Mẫu số 10 (Giao dịch tại Trung tâm Hành chính công), Mẫu số 11 (Phân chia di sản), Mẫu số 13 (Từ chối di sản), Mẫu số 17 (Di chúc), Mẫu số 02 (Chữ ký), Mẫu số 06 (Điểm chỉ), kèm tùy chọn người làm chứng (*) và người phiên dịch (**).
 
 ---
 

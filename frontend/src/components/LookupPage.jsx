@@ -19,7 +19,7 @@ export default function LookupPage({ onSelectProcedure }) {
       authority: 'UBND xã Tiền Phong, huyện Mê Linh, TP Hà Nội',
       status: 'ĐÃ CHỨNG THỰC',
       statusColor: 'emerald',
-      notaryNumber: '158/2026/SCT/HĐGD',
+      notaryNumber: '158/2026/SCT/GD',
       bookNumber: '01-TP/CC-SCT',
       property: 'Thửa đất số 105, Tờ bản đồ số 12, diện tích 120.5 m2 tại xã Tiền Phong',
       signatories: ['Bên chuyển nhượng: Nguyễn Văn An', 'Bên nhận chuyển nhượng: Trần Thị Bình', 'Người thực hiện chứng thực: Phó Chủ tịch UBND xã']
@@ -32,7 +32,7 @@ export default function LookupPage({ onSelectProcedure }) {
       authority: 'UBND phường Dịch Vọng Hậu, quận Cầu Giấy, TP Hà Nội',
       status: 'ĐÃ CHỨNG THỰC',
       statusColor: 'emerald',
-      notaryNumber: '42/2026/SCT/HĐGD',
+      notaryNumber: '42/2026/SCT/GD',
       bookNumber: '01-TP/CC-SCT',
       property: 'Hợp đồng mua bán xe ô tô Mazda 3 số 89/2025 trước đây',
       signatories: ['Bên A: Lê Hoàng Long', 'Bên B: Phạm Thu Trang', 'Người tiếp nhận: Cán bộ Tư pháp - Hộ tịch']

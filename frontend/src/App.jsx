@@ -201,7 +201,7 @@ export default function App() {
                 HỆ THỐNG DỊCH VỤ CÔNG TƯ PHÁP ĐIỆN TỬ
               </div>
               <p className="text-slate-400 leading-relaxed text-xs max-w-md">
-                Phần mềm tạo đơn, số hóa hồ sơ chứng thực và hợp đồng giao dịch cấp cơ sở, tuân thủ nghiêm ngặt Nghị định 23/2015/NĐ-CP, Thông tư 01/2020/TT-BTP và thể thức văn bản hành chính theo Nghị định 30/2020/NĐ-CP.
+                Phần mềm tạo đơn, số hóa hồ sơ chứng thực và hợp đồng giao dịch cấp cơ sở, tuân thủ nghiêm ngặt Nghị định 23/2015/NĐ-CP, Nghị định số 280/2025/NĐ-CP (mới nhất ban hành 27/10/2025) và thể thức văn bản hành chính theo Nghị định 30/2020/NĐ-CP.
               </p>
             </div>
 

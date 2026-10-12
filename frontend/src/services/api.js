@@ -50,32 +50,120 @@ function clientSidePreview(proc, formData = {}) {
 
   const formattedHtml = template.split('\n\n').map(para => `<p style="margin-bottom: 12px; line-height: 1.7;">${para.replace(/\n/g, '<br/>')}</p>`).join('');
 
-  return `
-    <div style="font-family: 'Times New Roman', serif; font-size: 14pt; color: #111; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 24px;">
-      ${formattedHtml}
-      <div style="margin-top: 40px; border-top: 2px dashed #94a3b8; padding-top: 24px;">
-        <h4 style="text-align: center; font-weight: bold; font-size: 13pt; text-transform: uppercase; margin-bottom: 10px;">LỜI CHỨNG CỦA NGƯỜI THỰC HIỆN CHỨNG THỰC</h4>
-        <p style="text-align: center; font-style: italic; font-size: 11pt; margin-bottom: 16px;">(Theo mẫu quy định tại Nghị định số 23/2015/NĐ-CP và Thông tư số 01/2020/TT-BTP)</p>
-        <p style="text-indent: 24px; text-align: justify; margin-bottom: 8px;">
-          Ngày <strong>${now.getDate()}</strong> tháng <strong>${now.getMonth() + 1}</strong> năm <strong>${now.getFullYear()}</strong>, tại trụ sở UBND phường Dịch Vọng Hậu, quận Cầu Giấy, TP. Hà Nội.
-        </p>
-        <p style="text-indent: 24px; text-align: justify; margin-bottom: 8px;">
-          Tôi: <strong>Nguyễn Văn Bình</strong> - Chức vụ: <strong>Chủ tịch UBND / Người thực hiện chứng thực</strong>.
-        </p>
-        <p style="text-indent: 24px; text-align: justify; margin-bottom: 16px;">
-          <strong>CHỨNG THỰC:</strong> Các bên tham gia giao kết hợp đồng có đầy đủ năng lực hành vi dân sự, tự nguyện ký kết trước sự chứng kiến của người thực hiện chứng thực.
-        </p>
-        <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-          <div style="text-align: center; width: 45%;">
-            <p><strong>CÁC BÊN GIAO KẾT</strong></p>
-            <p style="font-style: italic; font-size: 10pt;">(Ký, ghi rõ họ tên)</p>
+  const certType = formData.loi_chung_loai || (procedure.category === 'thua-ke' ? (procedure.id.includes('di-chuc') ? 'mau_17' : 'mau_11') : 'mau_09');
+  const hinhThucKy = formData.hinh_thuc_ky || "ký";
+  const coQuan = formData.co_quan_chung_thuc || "Ủy ban nhân dân cấp xã";
+  const diaDiem = formData.dia_diem_chung_thuc || `trụ sở ${coQuan}`;
+  const soBanGoc = formData.so_ban_goc || "03";
+  const soTo = formData.so_to || "02";
+  const soTrang = formData.so_trang || "03";
+
+  let affirmationHtml = '';
+
+  if (certType === 'mau_17') {
+    affirmationHtml = `
+      <div style="margin-top: 40px; border-top: 2px dashed #3b82f6; padding-top: 24px; background-color: #f8fafc; padding: 20px; border-radius: 8px;">
+        <div style="text-align: right; font-weight: bold; font-size: 11pt; color: #334155;">Mẫu số 17</div>
+        <h4 style="text-align: center; font-weight: bold; font-size: 13pt; text-transform: uppercase; margin-bottom: 4px; color: #1e3a8a;">LỜI CHỨNG CHỨNG THỰC DI CHÚC</h4>
+        <p style="text-align: center; font-style: italic; font-size: 10.5pt; margin-bottom: 16px; color: #64748b;">(Ban hành kèm theo Nghị định số 280/2025/NĐ-CP ngày 27/10/2025 của Chính phủ)</p>
+        <p style="margin-bottom: 8px;">Ngày <strong>${now.getDate()}</strong> tháng <strong>${now.getMonth() + 1}</strong> năm <strong>${now.getFullYear()}</strong> (Bằng chữ: ....................................................................) <sup>(1)</sup></p>
+        <p style="margin-bottom: 8px;">Tại: <strong>${diaDiem}</strong> <sup>(2)</sup></p>
+        <p style="margin-bottom: 8px;">Tôi <sup>(3)</sup>: ...................................................................., là <sup>(4)</sup>: ....................................................................</p>
+        <p style="font-weight: bold; margin-bottom: 8px;">Chứng thực</p>
+        <p style="margin-bottom: 8px;">- Ông/bà: <strong>${formData.ben_a_ho_ten || formData.nguoi_lap_di_chuc || "...................................................."}</strong> <sup>(5)</sup> Giấy tờ tùy thân <sup>(6)</sup> số <strong>${formData.ben_a_cccd || formData.nguoi_lap_di_chuc_cccd || "...................................."}</strong> đã tự nguyện lập di chúc này và đã cam đoan chịu trách nhiệm trước pháp luật về nội dung của di chúc.</p>
+        <p style="margin-bottom: 8px;">- Tại thời điểm chứng thực, ông/bà <strong>${formData.ben_a_ho_ten || formData.nguoi_lap_di_chuc || "...................................................."}</strong> <sup>(5)</sup> minh mẫn, sáng suốt, nhận thức và làm chủ được hành vi của mình, tự nguyện lập di chúc và đã <strong>${hinhThucKy}</strong> <sup>(7)</sup> vào di chúc này trước mặt tôi.</p>
+        ${formData.co_nguoi_lam_chung ? `
+        <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 10px; font-size: 11pt; font-style: italic; margin-bottom: 10px;">
+          <strong>(*) Người làm chứng:</strong> Ông/bà <strong>${formData.nguoi_lam_chung_ten || "................................"}</strong>, Giấy tờ tùy thân số <strong>${formData.nguoi_lam_chung_cccd || "................................"}</strong> cấp ngày ${formData.nguoi_lam_chung_ngay_cap || "................"} tại ${formData.nguoi_lam_chung_noi_cap || "Bộ Công an"}; có đủ điều kiện theo quy định của pháp luật, trực tiếp chứng kiến việc chứng thực, cam đoan chịu trách nhiệm trước pháp luật về việc làm chứng của mình và đã ký vào từng trang của di chúc trước sự chứng kiến của người thực hiện chứng thực.
+        </div>` : ''}
+        <p style="margin-bottom: 12px;">Di chúc này được lập thành <strong>${soBanGoc}</strong> bản gốc (mỗi bản gốc gồm ${soTo} tờ, ${soTrang} trang); giao cho người lập di chúc 01 bản; lưu tại UBND cấp xã 01 (một) bản.</p>
+        <div style="display: flex; justify-content: space-between; border-top: 1px solid #cbd5e1; padding-top: 10px; font-size: 11pt;">
+          <div>Số chứng thực: <strong style="color: #1e3a8a;">...................</strong> quyển số <strong style="color: #1e3a8a;">.......... <sup>(8)</sup> -SCT/GD</strong></div>
+        </div>
+        <div style="text-align: right; margin-top: 24px;">
+          <p style="font-weight: bold; text-transform: uppercase; font-size: 11pt;">Người thực hiện chứng thực ký, ghi rõ họ, tên và đóng dấu</p>
+          <div style="height: 70px;"></div>
+        </div>
+      </div>
+    `;
+  } else if (certType === 'mau_10') {
+    affirmationHtml = `
+      <div style="margin-top: 40px; border-top: 2px dashed #2563eb; padding-top: 24px; background-color: #f8fafc; padding: 20px; border-radius: 8px;">
+        <div style="text-align: right; font-weight: bold; font-size: 11pt; color: #334155;">Mẫu số 10</div>
+        <h4 style="text-align: center; font-weight: bold; font-size: 13pt; text-transform: uppercase; margin-bottom: 4px; color: #1e3a8a;">LỜI CHỨNG CHỨNG THỰC GIAO DỊCH<br/>TẠI TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG</h4>
+        <p style="text-align: center; font-style: italic; font-size: 10.5pt; margin-bottom: 16px; color: #64748b;">(Ban hành kèm theo Nghị định số 280/2025/NĐ-CP ngày 27/10/2025 của Chính phủ)</p>
+        <p style="margin-bottom: 8px;">Ngày <strong>${now.getDate()}</strong> tháng <strong>${now.getMonth() + 1}</strong> năm <strong>${now.getFullYear()}</strong> (Bằng chữ: ....................................................................) <sup>(1)</sup></p>
+        <p style="margin-bottom: 8px;">Tại: <strong>${diaDiem}</strong> <sup>(2)</sup></p>
+        <p style="margin-bottom: 8px;">Tôi <sup>(3)</sup>: ...................................................................., là <sup>(4)</sup>: ....................................................................</p>
+        <p style="font-weight: bold; margin-bottom: 8px;">Chứng thực</p>
+        <p style="margin-bottom: 8px;">- Giao dịch <sup>(5)</sup>: <strong>${procedure.name || "Giao dịch"}</strong> được giao kết giữa:</p>
+        <div style="padding-left: 16px; margin-bottom: 8px;">
+          <p>Bên A: Ông/bà: <strong>${formData.ben_a_ho_ten || "...................................................."}</strong> <sup>(6)</sup> | Giấy tờ tùy thân <sup>(7)</sup> số: <strong>${formData.ben_a_cccd || "...................................."}</strong></p>
+          <p>Bên B: Ông/bà: <strong>${formData.ben_b_ho_ten || "...................................................."}</strong> <sup>(6)</sup> | Giấy tờ tùy thân <sup>(7)</sup> số: <strong>${formData.ben_b_cccd || "...................................."}</strong></p>
+        </div>
+        <p style="margin-bottom: 8px;">- Các bên tham gia giao dịch cam đoan chịu trách nhiệm trước pháp luật về nội dung của giao dịch.</p>
+        <p style="margin-bottom: 8px;">- Tại thời điểm tiếp nhận hồ sơ yêu cầu và chứng thực, các bên tham gia giao dịch minh mẫn, nhận thức và làm chủ được hành vi của mình; tự nguyện thỏa thuận giao kết giao dịch và đã <strong>${hinhThucKy}</strong> <sup>(8)</sup> vào giao dịch này trước mặt ông/bà ................................................................ là người tiếp nhận hồ sơ.</p>
+        <p style="margin-bottom: 12px;">Giao dịch này được lập thành <strong>${soBanGoc}</strong> bản gốc (mỗi bản gốc gồm ${soTo} tờ, ${soTrang} trang), cấp cho: Bên A: 01 bản gốc; Bên B: 01 bản gốc; Lưu tại Trung tâm Phục vụ hành chính công: 01 (một) bản gốc.</p>
+        <div style="border-top: 1px solid #cbd5e1; padding-top: 10px; font-size: 11pt;">
+          <div>Số chứng thực: <strong style="color: #1e3a8a;">...................</strong> quyển số <strong style="color: #1e3a8a;">.......... <sup>(10)</sup> -SCT/GD</strong></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 24px; text-align: center;">
+          <div style="width: 48%;">
+            <p style="font-weight: bold; font-size: 11pt;">Người tiếp nhận hồ sơ ký,<br/>ghi rõ họ, tên</p>
+            <div style="height: 60px;"></div>
           </div>
-          <div style="text-align: center; width: 45%;">
-            <p><strong>NGƯỜI THỰC HIỆN CHỨNG THỰC</strong></p>
-            <p style="font-style: italic; font-size: 10pt;">(Ký, đóng dấu, ghi rõ họ tên, chức vụ)</p>
+          <div style="width: 48%;">
+            <p style="font-weight: bold; font-size: 11pt;">Người thực hiện chứng thực ký,<br/>ghi rõ họ, tên và đóng dấu</p>
+            <div style="height: 60px;"></div>
           </div>
         </div>
       </div>
+    `;
+  } else {
+    // Mặc định Mẫu số 09: Lời chứng chứng thực giao dịch (UBND xã / VP Công chứng)
+    affirmationHtml = `
+      <div style="margin-top: 40px; border-top: 2px dashed #b91c1c; padding-top: 24px; background-color: #fef2f2; padding: 20px; border-radius: 8px;">
+        <div style="text-align: right; font-weight: bold; font-size: 11pt; color: #7f1d1d;">Mẫu số 09</div>
+        <h4 style="text-align: center; font-weight: bold; font-size: 13pt; text-transform: uppercase; margin-bottom: 4px; color: #991b1b;">LỜI CHỨNG CHỨNG THỰC GIAO DỊCH</h4>
+        <p style="text-align: center; font-style: italic; font-size: 10.5pt; margin-bottom: 16px; color: #64748b;">(Ban hành kèm theo Nghị định số 280/2025/NĐ-CP ngày 27/10/2025 của Chính phủ sửa đổi Nghị định 23/2015/NĐ-CP)</p>
+        <p style="margin-bottom: 8px;">Ngày <strong>${now.getDate()}</strong> tháng <strong>${now.getMonth() + 1}</strong> năm <strong>${now.getFullYear()}</strong> (Bằng chữ: ....................................................................) <sup>(1)</sup></p>
+        <p style="margin-bottom: 8px;">Tại: <strong>${diaDiem}</strong> <sup>(2)</sup></p>
+        <p style="margin-bottom: 8px;">Tôi <sup>(3)</sup>: ...................................................................., là <sup>(4)</sup>: ....................................................................</p>
+        <p style="font-weight: bold; margin-bottom: 8px;">Chứng thực</p>
+        <p style="margin-bottom: 8px;">- Giao dịch <sup>(5)</sup>: <strong>${procedure.name || "Giao dịch"}</strong> được giao kết giữa:</p>
+        <div style="padding-left: 16px; margin-bottom: 8px;">
+          <p>Bên A: Ông/bà: <strong>${formData.ben_a_ho_ten || "...................................................."}</strong> <sup>(6)</sup> | Giấy tờ tùy thân <sup>(7)</sup> số: <strong>${formData.ben_a_cccd || "...................................."}</strong></p>
+          <p>Bên B: Ông/bà: <strong>${formData.ben_b_ho_ten || "...................................................."}</strong> <sup>(6)</sup> | Giấy tờ tùy thân <sup>(7)</sup> số: <strong>${formData.ben_b_cccd || "...................................."}</strong></p>
+        </div>
+        <p style="margin-bottom: 8px;">- Các bên tham gia giao dịch đã cam đoan chịu trách nhiệm trước pháp luật về nội dung của giao dịch.</p>
+        <p style="margin-bottom: 8px;">- Tại thời điểm chứng thực, các bên tham gia giao dịch minh mẫn, nhận thức và làm chủ được hành vi của mình; tự nguyện thỏa thuận giao kết giao dịch và đã <strong>${hinhThucKy}</strong> <sup>(8)</sup> vào giao dịch này trước mặt tôi.</p>
+        
+        ${formData.co_nguoi_lam_chung ? `
+        <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 10px; font-size: 11pt; font-style: italic; margin-bottom: 10px;">
+          <strong>(*) Trường hợp có người làm chứng:</strong> Ông/bà <strong>${formData.nguoi_lam_chung_ten || "................................"}</strong>, Giấy tờ tùy thân số <strong>${formData.nguoi_lam_chung_cccd || "................................"}</strong> do ${formData.nguoi_lam_chung_noi_cap || "Bộ Công an"} cấp ngày ${formData.nguoi_lam_chung_ngay_cap || "................"}; lý do: ${formData.nguoi_lam_chung_ly_do || "người yêu cầu chứng thực không tự đọc/ký được"}; có đủ điều kiện làm chứng theo quy định của pháp luật, trực tiếp chứng kiến việc chứng thực, cam đoan chịu trách nhiệm trước pháp luật về việc làm chứng của mình và đã ký vào từng trang của giao dịch trước sự chứng kiến của người thực hiện chứng thực.
+        </div>` : ''}
+
+        ${formData.co_nguoi_phien_dich ? `
+        <div style="background-color: #d1fae5; border-left: 4px solid #10b981; padding: 10px; font-size: 11pt; font-style: italic; margin-bottom: 10px;">
+          <strong>(**) Trường hợp có người phiên dịch:</strong> Ông/bà <strong>${formData.nguoi_phien_dich_ten || "................................"}</strong>, Giấy tờ tùy thân số <strong>${formData.nguoi_phien_dich_cccd || "................................"}</strong> do ${formData.nguoi_phien_dich_noi_cap || "Bộ Công an"} cấp ngày ${formData.nguoi_phien_dich_ngay_cap || "................"}; lý do: ${formData.nguoi_phien_dich_ly_do || "người yêu cầu chứng thực không thạo tiếng Việt"}; có đủ điều kiện theo quy định của pháp luật, đã dịch đầy đủ, chính xác nội dung giao dịch và lời chứng; cam đoan chịu trách nhiệm trước pháp luật về việc phiên dịch và đã ký vào từng trang của giao dịch trước sự chứng kiến của người thực hiện chứng thực.
+        </div>` : ''}
+
+        <p style="margin-bottom: 12px;">Giao dịch này được lập thành <strong>${soBanGoc}</strong> bản gốc (mỗi bản gốc gồm ${soTo} tờ, ${soTrang} trang), cấp cho: Bên A: 01 bản gốc; Bên B: 01 bản gốc; Lưu tại <strong>${coQuan}</strong> 01 (một) bản gốc.</p>
+        <div style="border-top: 1px solid #fecaca; padding-top: 10px; font-size: 11pt;">
+          <div>Số chứng thực: <strong style="color: #b91c1c;">...................</strong> quyển số <strong style="color: #b91c1c;">.......... <sup>(9)</sup> -SCT/GD</strong></div>
+        </div>
+        <div style="text-align: right; margin-top: 24px;">
+          <p style="font-weight: bold; text-transform: uppercase; font-size: 11pt;">Người thực hiện chứng thực ký, ghi rõ họ, tên và đóng dấu</p>
+          <div style="height: 70px;"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div style="font-family: 'Times New Roman', serif; font-size: 14pt; color: #111; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 24px;">
+      ${formattedHtml}
+      ${affirmationHtml}
     </div>
   `;
 }

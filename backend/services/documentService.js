@@ -236,30 +236,289 @@ class DocumentService {
     paragraphs.push(new Paragraph({ text: "", spacing: { before: 300 } }));
     paragraphs.push(table);
 
-    // Official Affirmation Statement (Lời chứng)
-    paragraphs.push(new Paragraph({ text: "", spacing: { before: 400 } }));
+    // Official Affirmation Statement (Lời chứng theo Nghị định số 280/2025/NĐ-CP ngày 27/10/2025)
+    paragraphs.push(new Paragraph({ text: "", spacing: { before: 300 } }));
     paragraphs.push(new Paragraph({
       alignment: AlignmentType.CENTER,
       children: [
-        new TextRun({ text: "LỜI CHỨNG CỦA NGƯỜI THỰC HIỆN CHỨNG THỰC", bold: true, size: 28, font: "Times New Roman", color: "9B2C2C" })
+        new TextRun({ text: "────────────────────────────────────────", color: "94A3B8", font: "Times New Roman", size: 20 })
       ],
       spacing: { after: 150 }
     }));
-    paragraphs.push(new Paragraph({
-      children: [
-        new TextRun({
-          text: `Ngày ${d} tháng ${m} năm ${y}, tại Bộ phận Tiếp nhận và Trả kết quả UBND ${formData.co_quan_chung_thuc || "xã/phường..."}, Tôi là người tiếp nhận hồ sơ chứng nhận các bên tham gia giao dịch đã tự nguyện thỏa thuận, có đầy đủ năng lực hành vi dân sự, đã tự đọc lại toàn bộ văn bản và ký/điểm chỉ trước mặt tôi.`,
-          font: "Times New Roman",
-          size: 24
-        })
-      ]
-    }));
-    paragraphs.push(new Paragraph({
-      children: [
-        new TextRun({ text: `Số chứng thực: ......../2026/SCT/HĐGD    -    Quyển số: 01-TP/CC`, bold: true, font: "Times New Roman", size: 24 })
-      ],
-      spacing: { before: 100, after: 200 }
-    }));
+
+    const certType = formData.loi_chung_loai || (procedure.category === 'thua-ke' ? (procedure.id.includes('di-chuc') ? 'mau_17' : 'mau_11') : 'mau_09');
+    const hinhThucKy = formData.hinh_thuc_ky || "ký"; // 'ký', 'điểm chỉ', 'ký và điểm chỉ'
+    const coQuan = formData.co_quan_chung_thuc || "Ủy ban nhân dân cấp xã";
+    const diaDiem = formData.dia_diem_chung_thuc || `trụ sở ${coQuan}`;
+    const soBanGoc = formData.so_ban_goc || "03";
+    const soTo = formData.so_to || "02";
+    const soTrang = formData.so_trang || "03";
+
+    if (certType === 'mau_17') {
+      // Mẫu số 17: Lời chứng chứng thực di chúc
+      paragraphs.push(new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        children: [new TextRun({ text: "Mẫu số 17", bold: true, font: "Times New Roman", size: 24 })]
+      }));
+      paragraphs.push(new Paragraph({
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: "LỜI CHỨNG CHỨNG THỰC DI CHÚC", bold: true, font: "Times New Roman", size: 28, color: "1E3A8A" })],
+        spacing: { after: 200 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `Ngày ${d} tháng ${m} năm ${y} (Bằng chữ: ..........................................................................)`, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: `Tại: ${diaDiem}`, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: `Tôi: ................................................................, là: ................................................................`, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: "Chứng thực:", bold: true, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `- Ông/bà: `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_a_ho_ten || formData.nguoi_lap_di_chuc || "....................................................", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: ` Giấy tờ tùy thân số: `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_a_cccd || formData.nguoi_lap_di_chuc_cccd || "........................................", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: ` đã tự nguyện lập di chúc này và đã cam đoan chịu trách nhiệm trước pháp luật về nội dung của di chúc.`, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `- Tại thời điểm chứng thực, ông/bà `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_a_ho_ten || formData.nguoi_lap_di_chuc || "....................................................", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: ` minh mẫn, sáng suốt, nhận thức và làm chủ được hành vi của mình, tự nguyện lập di chúc và đã ${hinhThucKy} vào di chúc này trước mặt tôi.`, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 100 }
+      }));
+      if (formData.co_nguoi_lam_chung) {
+        paragraphs.push(new Paragraph({
+          children: [
+            new TextRun({ text: `(*) Người làm chứng: Ông/bà ${formData.nguoi_lam_chung_ten || "................................"}, Giấy tờ tùy thân số ${formData.nguoi_lam_chung_cccd || "................................"} do ${formData.nguoi_lam_chung_noi_cap || "Bộ Công an"} cấp ngày ${formData.nguoi_lam_chung_ngay_cap || "...................."}, có đủ điều kiện theo quy định của pháp luật, đã trực tiếp chứng kiến việc chứng thực và cam đoan chịu trách nhiệm trước pháp luật về việc làm chứng của mình, đã ký vào từng trang của di chúc trước sự chứng kiến của người thực hiện chứng thực.`, font: "Times New Roman", size: 24, italics: true })
+          ],
+          spacing: { after: 100 }
+        }));
+      }
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `Di chúc này được lập thành ${soBanGoc} bản gốc (mỗi bản gốc gồm ${soTo} tờ, ${soTrang} trang); giao cho người lập di chúc 01 bản; lưu tại ${coQuan} 01 (một) bản.`, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 150 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `Số chứng thực: ........ quyển số: ........ -SCT/GD`, bold: true, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 200 }
+      }));
+
+      // Signature
+      paragraphs.push(new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        children: [
+          new TextRun({ text: "Người thực hiện chứng thực ký, ghi rõ họ, tên và đóng dấu", bold: true, italics: true, font: "Times New Roman", size: 24 })
+        ],
+        spacing: { after: 1000 }
+      }));
+    } else if (certType === 'mau_10') {
+      // Mẫu số 10: Lời chứng chứng thực giao dịch tại Trung tâm Phục vụ hành chính công
+      paragraphs.push(new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        children: [new TextRun({ text: "Mẫu số 10", bold: true, font: "Times New Roman", size: 24 })]
+      }));
+      paragraphs.push(new Paragraph({
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: "LỜI CHỨNG CHỨNG THỰC GIAO DỊCH\nTẠI TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG", bold: true, font: "Times New Roman", size: 28, color: "1E3A8A" })],
+        spacing: { after: 200 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: `Ngày ${d} tháng ${m} năm ${y} (Bằng chữ: ..........................................................................)`, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: `Tại: ${diaDiem}`, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: `Tôi: ................................................................, là: ................................................................`, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: "Chứng thực:", bold: true, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `- Giao dịch: `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: procedure.name || "Hợp đồng giao dịch", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: ` được giao kết giữa:\n`, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: `  Bên A: Ông/bà: `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_a_ho_ten || "....................................................", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: `\n  Giấy tờ tùy thân số: `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_a_cccd || "........................................", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: `\n  Bên B: Ông/bà: `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_b_ho_ten || "....................................................", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: `\n  Giấy tờ tùy thân số: `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_b_cccd || "........................................", bold: true, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: `- Các bên tham gia giao dịch cam đoan chịu trách nhiệm trước pháp luật về nội dung của giao dịch.`, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `- Tại thời điểm tiếp nhận hồ sơ yêu cầu và chứng thực, các bên tham gia giao dịch minh mẫn, nhận thức và làm chủ được hành vi của mình; tự nguyện thỏa thuận giao kết giao dịch và đã ${hinhThucKy} vào giao dịch này trước mặt ông/bà ................................................................ là người tiếp nhận hồ sơ.`, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `Giao dịch này được lập thành ${soBanGoc} bản gốc (mỗi bản gốc gồm ${soTo} tờ, ${soTrang} trang), cấp cho:\n+ Bên A: 01 bản gốc;\n+ Bên B: 01 bản gốc;\nLưu tại Trung tâm Phục vụ hành chính công: 01 (một) bản gốc.`, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 150 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `Số chứng thực: ........ quyển số: ........ -SCT/GD`, bold: true, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 200 }
+      }));
+
+      // Dual Signatures: Người tiếp nhận hồ sơ & Người thực hiện chứng thực
+      const signTable = new Table({
+        width: { size: 100, type: WidthType.PERCENTAGE },
+        rows: [
+          new TableRow({
+            children: [
+              new TableCell({
+                borders: { top: { style: BorderStyle.NONE }, bottom: { style: BorderStyle.NONE }, left: { style: BorderStyle.NONE }, right: { style: BorderStyle.NONE } },
+                children: [
+                  new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Người tiếp nhận hồ sơ ký,\nghi rõ họ, tên", bold: true, italics: true, size: 24, font: "Times New Roman" })] }),
+                  new Paragraph({ text: "", spacing: { after: 800 } })
+                ]
+              }),
+              new TableCell({
+                borders: { top: { style: BorderStyle.NONE }, bottom: { style: BorderStyle.NONE }, left: { style: BorderStyle.NONE }, right: { style: BorderStyle.NONE } },
+                children: [
+                  new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Người thực hiện chứng thực ký,\nghi rõ họ, tên và đóng dấu", bold: true, italics: true, size: 24, font: "Times New Roman" })] }),
+                  new Paragraph({ text: "", spacing: { after: 800 } })
+                ]
+              })
+            ]
+          })
+        ]
+      });
+      paragraphs.push(signTable);
+    } else {
+      // Mặc định Mẫu số 09: Lời chứng chứng thực giao dịch (Nghị định 280/2025/NĐ-CP trang 23-24)
+      paragraphs.push(new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        children: [new TextRun({ text: "Mẫu số 09", bold: true, font: "Times New Roman", size: 24 })]
+      }));
+      paragraphs.push(new Paragraph({
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: "LỜI CHỨNG CHỨNG THỰC GIAO DỊCH", bold: true, font: "Times New Roman", size: 28, color: "1E3A8A" })],
+        spacing: { after: 200 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `Ngày ${d} tháng ${m} năm ${y} (Bằng chữ: ..........................................................................) (1)`, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: `Tại: ${diaDiem} (2)`, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: `Tôi (3): ......................................................................, là (4): ......................................................................`, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: "Chứng thực", bold: true, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `- Giao dịch (5) `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: procedure.name || "Hợp đồng giao dịch", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: ` được giao kết giữa:\n`, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: `Bên A: Ông/bà: `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_a_ho_ten || ".......................................................................", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: ` (6)\nGiấy tờ tùy thân (7) số `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_a_cccd || "...........................................................", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: `\nBên B: Ông/bà: `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_b_ho_ten || ".......................................................................", bold: true, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: ` (6)\nGiấy tờ tùy thân (7) số `, font: "Times New Roman", size: 26 }),
+          new TextRun({ text: formData.ben_b_cccd || "...........................................................", bold: true, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [new TextRun({ text: `- Các bên tham gia giao dịch đã cam đoan chịu trách nhiệm trước pháp luật về nội dung của giao dịch.`, font: "Times New Roman", size: 26 })],
+        spacing: { after: 100 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `- Tại thời điểm chứng thực, các bên tham gia giao dịch minh mẫn, nhận thức và làm chủ được hành vi của mình; tự nguyện thỏa thuận giao kết giao dịch và đã ${hinhThucKy} (8) vào giao dịch này trước mặt tôi.`, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 100 }
+      }));
+
+      // Bổ sung người làm chứng (*) nếu có
+      if (formData.co_nguoi_lam_chung) {
+        paragraphs.push(new Paragraph({
+          children: [
+            new TextRun({ text: `(*) Trường hợp có người làm chứng: Ông/bà ${formData.nguoi_lam_chung_ten || "...................................................."}, Giấy tờ tùy thân số ${formData.nguoi_lam_chung_cccd || "........................................"} do ${formData.nguoi_lam_chung_noi_cap || "Bộ Công an"} cấp ngày ${formData.nguoi_lam_chung_ngay_cap || "...................."}, lý do: ${formData.nguoi_lam_chung_ly_do || "người yêu cầu chứng thực không tự đọc/ký được"}; người làm chứng có đủ điều kiện theo quy định của pháp luật, đã trực tiếp chứng kiến việc chứng thực; người làm chứng cam đoan chịu trách nhiệm trước pháp luật về việc làm chứng của mình, đã ký vào từng trang của giao dịch trước sự chứng kiến của người thực hiện chứng thực.`, font: "Times New Roman", size: 24, italics: true })
+          ],
+          spacing: { after: 100 }
+        }));
+      }
+
+      // Bổ sung người phiên dịch (**) nếu có
+      if (formData.co_nguoi_phien_dich) {
+        paragraphs.push(new Paragraph({
+          children: [
+            new TextRun({ text: `(**) Trường hợp có người phiên dịch: Ông/bà ${formData.nguoi_phien_dich_ten || "...................................................."}, Giấy tờ tùy thân số ${formData.nguoi_phien_dich_cccd || "........................................"} do ${formData.nguoi_phien_dich_noi_cap || "Bộ Công an"} cấp ngày ${formData.nguoi_phien_dich_ngay_cap || "...................."}, lý do: ${formData.nguoi_phien_dich_ly_do || "người yêu cầu chứng thực không thạo tiếng Việt"}; người phiên dịch có đủ điều kiện theo quy định của pháp luật, đã dịch đầy đủ, chính xác nội dung của giao dịch, nội dung lời chứng; cam đoan chịu trách nhiệm trước pháp luật về việc phiên dịch và đã ký vào từng trang của giao dịch trước sự chứng kiến của người thực hiện chứng thực.`, font: "Times New Roman", size: 24, italics: true })
+          ],
+          spacing: { after: 100 }
+        }));
+      }
+
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `Giao dịch này được lập thành ${soBanGoc} bản gốc (mỗi bản gốc gồm ${soTo} tờ, ${soTrang} trang), cấp cho:\n+ Bên A: 01 bản gốc;\n+ Bên B: 01 bản gốc;\nLưu tại ${coQuan} 01 (một) bản gốc.`, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 150 }
+      }));
+      paragraphs.push(new Paragraph({
+        children: [
+          new TextRun({ text: `Số chứng thực: ........ quyển số: ........ (9) -SCT/GD`, bold: true, font: "Times New Roman", size: 26 })
+        ],
+        spacing: { after: 200 }
+      }));
+
+      // Signature block
+      paragraphs.push(new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        children: [
+          new TextRun({ text: "Người thực hiện chứng thực ký, ghi rõ họ, tên và đóng dấu", bold: true, italics: true, font: "Times New Roman", size: 24 })
+        ],
+        spacing: { after: 1000 }
+      }));
+    }
 
     const doc = new Document({
       sections: [{
@@ -321,20 +580,139 @@ ${(procedure.fields || []).filter(f => f.group === 'dieuphap').map(f => `<div cl
   }
 
   getAffirmationStatement(procedure, replacements) {
-    return `
-<div class="mt-8 pt-6 border-t-2 border-dashed border-red-300 bg-red-50/50 p-6 rounded-lg">
-  <div class="text-center font-bold text-red-900 text-base uppercase mb-3">LỜI CHỨNG CỦA NGƯỜI THỰC HIỆN CHỨNG THỰC</div>
-  <div class="text-sm text-slate-700 leading-relaxed mb-4">
-    Ngày ${replacements.ngay_lap} tháng ${replacements.thang_lap} năm ${replacements.nam_lap}, tại Bộ phận Tiếp nhận và Trả kết quả UBND ${replacements.co_quan_chung_thuc || "xã Tiền Phong, huyện Mê Linh, thành phố Hà Nội"}.<br/>
-    Tôi là người có thẩm quyền thực hiện chứng thực theo Nghị định 23/2015/NĐ-CP và Thông tư 01/2020/TT-BTP, chứng nhận các bên tham gia giao dịch đã tự nguyện giao kết, hoàn toàn minh mẫn, tự đọc lại toàn bộ nội dung văn bản này và đã cùng ký/điểm chỉ trước mặt tôi.
+    const certType = replacements.loi_chung_loai || (procedure.category === 'thua-ke' ? (procedure.id.includes('di-chuc') ? 'mau_17' : 'mau_11') : 'mau_09');
+    const hinhThucKy = replacements.hinh_thuc_ky || "ký"; // 'ký', 'điểm chỉ', 'ký và điểm chỉ'
+    const coQuan = replacements.co_quan_chung_thuc || "Ủy ban nhân dân cấp xã";
+    const diaDiem = replacements.dia_diem_chung_thuc || `trụ sở ${coQuan}`;
+    const soBanGoc = replacements.so_ban_goc || "03";
+    const soTo = replacements.so_to || "02";
+    const soTrang = replacements.so_trang || "03";
+    const d = replacements.ngay_lap || new Date().getDate();
+    const m = replacements.thang_lap || (new Date().getMonth() + 1);
+    const y = replacements.nam_lap || new Date().getFullYear();
+
+    if (certType === 'mau_17') {
+      // Mẫu số 17: Lời chứng chứng thực di chúc
+      return `
+<div class="mt-8 pt-6 border-t-2 border-dashed border-blue-400 bg-blue-50/40 p-6 rounded-xl font-serif text-slate-900">
+  <div class="text-right text-xs font-bold text-slate-600 mb-1">Mẫu số 17</div>
+  <div class="text-center font-bold text-blue-950 text-base uppercase mb-1">LỜI CHỨNG CHỨNG THỰC DI CHÚC</div>
+  <div class="text-center text-xs italic text-slate-500 mb-4">(Ban hành kèm theo Nghị định số 280/2025/NĐ-CP ngày 27/10/2025 của Chính phủ)</div>
+
+  <div class="text-sm leading-relaxed space-y-2 mb-4">
+    <p>Ngày <strong>${d}</strong> tháng <strong>${m}</strong> năm <strong>${y}</strong> (Bằng chữ: ....................................................................) <sup>(1)</sup></p>
+    <p>Tại: <strong>${diaDiem}</strong> <sup>(2)</sup></p>
+    <p>Tôi <sup>(3)</sup>: ...................................................................., là <sup>(4)</sup>: ....................................................................</p>
+    <p class="font-bold">Chứng thực</p>
+    <p>- Ông/bà: <strong>${replacements.ben_a_ho_ten || replacements.nguoi_lap_di_chuc || "...................................................."}</strong> <sup>(5)</sup> Giấy tờ tùy thân <sup>(6)</sup> số <strong>${replacements.ben_a_cccd || replacements.nguoi_lap_di_chuc_cccd || "...................................."}</strong> đã tự nguyện lập di chúc này và đã cam đoan chịu trách nhiệm trước pháp luật về nội dung của di chúc.</p>
+    <p>- Tại thời điểm chứng thực, ông/bà <strong>${replacements.ben_a_ho_ten || replacements.nguoi_lap_di_chuc || "...................................................."}</strong> <sup>(5)</sup> minh mẫn, sáng suốt, nhận thức và làm chủ được hành vi của mình, tự nguyện lập di chúc và đã <strong>${hinhThucKy}</strong> <sup>(7)</sup> vào di chúc này trước mặt tôi.</p>
+    ${replacements.co_nguoi_lam_chung ? `
+    <div class="p-3 bg-amber-50/80 border-l-4 border-amber-500 rounded text-xs italic text-slate-800">
+      <strong>(*) Người làm chứng:</strong> Ông/bà <strong>${replacements.nguoi_lam_chung_ten || "................................"}</strong>, Giấy tờ tùy thân số <strong>${replacements.nguoi_lam_chung_cccd || "................................"}</strong> cấp ngày ${replacements.nguoi_lam_chung_ngay_cap || "................"} tại ${replacements.nguoi_lam_chung_noi_cap || "Bộ Công an"}; có đủ điều kiện làm chứng theo quy định của pháp luật, trực tiếp chứng kiến việc chứng thực, cam đoan chịu trách nhiệm trước pháp luật về việc làm chứng của mình và đã ký vào từng trang của di chúc trước sự chứng kiến của người thực hiện chứng thực.
+    </div>` : ''}
+    <p>Di chúc này được lập thành <strong>${soBanGoc}</strong> bản gốc (mỗi bản gốc gồm ${soTo} tờ, ${soTrang} trang); giao cho người lập di chúc 01 bản; lưu tại UBND cấp xã 01 (một) bản.</p>
   </div>
-  <div class="flex justify-between items-center text-xs font-semibold text-slate-600">
-    <div>Số chứng thực: <span class="text-red-700 font-bold">....... / ${replacements.nam_lap} / SCT/HĐGD</span></div>
-    <div>Quyển số: <span class="text-red-700 font-bold">01 - TP/CC-SCT</span></div>
+
+  <div class="flex justify-between items-center text-xs font-semibold text-slate-700 pt-3 border-t border-blue-200">
+    <div>Số chứng thực: <span class="text-blue-900 font-bold">...................</span> quyển số <span class="text-blue-900 font-bold">.......... <sup>(8)</sup> -SCT/GD</span></div>
   </div>
+
   <div class="text-right mt-6">
-    <div class="text-xs font-bold uppercase text-slate-700">NGƯỜI THỰC HIỆN CHỨNG THỰC</div>
-    <div class="italic text-xs text-slate-500">(Ký, đóng dấu và ghi rõ họ tên, chức vụ)</div>
+    <div class="text-xs font-bold uppercase text-slate-800">Người thực hiện chứng thực ký, ghi rõ họ, tên và đóng dấu</div>
+    <div class="h-20"></div>
+  </div>
+</div>`;
+    }
+
+    if (certType === 'mau_10') {
+      // Mẫu số 10: Giao dịch tại Trung tâm Phục vụ hành chính công
+      return `
+<div class="mt-8 pt-6 border-t-2 border-dashed border-blue-400 bg-blue-50/40 p-6 rounded-xl font-serif text-slate-900">
+  <div class="text-right text-xs font-bold text-slate-600 mb-1">Mẫu số 10</div>
+  <div class="text-center font-bold text-blue-950 text-base uppercase mb-1">LỜI CHỨNG CHỨNG THỰC GIAO DỊCH<br/>TẠI TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG</div>
+  <div class="text-center text-xs italic text-slate-500 mb-4">(Ban hành kèm theo Nghị định số 280/2025/NĐ-CP ngày 27/10/2025 của Chính phủ)</div>
+
+  <div class="text-sm leading-relaxed space-y-2 mb-4">
+    <p>Ngày <strong>${d}</strong> tháng <strong>${m}</strong> năm <strong>${y}</strong> (Bằng chữ: ....................................................................) <sup>(1)</sup></p>
+    <p>Tại: <strong>${diaDiem}</strong> <sup>(2)</sup></p>
+    <p>Tôi <sup>(3)</sup>: ...................................................................., là <sup>(4)</sup>: ....................................................................</p>
+    <p class="font-bold">Chứng thực</p>
+    <p>- Giao dịch <sup>(5)</sup>: <strong>${procedure.name || "Giao dịch"}</strong> được giao kết giữa:</p>
+    <div class="pl-4">
+      <p>Bên A: Ông/bà: <strong>${replacements.ben_a_ho_ten || "...................................................."}</strong> <sup>(6)</sup></p>
+      <p>Giấy tờ tùy thân <sup>(7)</sup> số: <strong>${replacements.ben_a_cccd || "...................................."}</strong></p>
+      <p>Bên B: Ông/bà: <strong>${replacements.ben_b_ho_ten || "...................................................."}</strong> <sup>(6)</sup></p>
+      <p>Giấy tờ tùy thân <sup>(7)</sup> số: <strong>${replacements.ben_b_cccd || "...................................."}</strong></p>
+    </div>
+    <p>- Các bên tham gia giao dịch cam đoan chịu trách nhiệm trước pháp luật về nội dung của giao dịch.</p>
+    <p>- Tại thời điểm tiếp nhận hồ sơ yêu cầu và chứng thực, các bên tham gia giao dịch minh mẫn, nhận thức và làm chủ được hành vi của mình; tự nguyện thỏa thuận giao kết giao dịch và đã <strong>${hinhThucKy}</strong> <sup>(8)</sup> vào giao dịch này trước mặt ông/bà ................................................................ là người tiếp nhận hồ sơ.</p>
+    <p>Giao dịch này được lập thành <strong>${soBanGoc}</strong> bản gốc (mỗi bản gốc gồm ${soTo} tờ, ${soTrang} trang), cấp cho:<br/>
+    + Bên A: 01 bản gốc;<br/>
+    + Bên B: 01 bản gốc;<br/>
+    Lưu tại <sup>(9)</sup> Trung tâm Phục vụ hành chính công: 01 (một) bản gốc.</p>
+  </div>
+
+  <div class="flex justify-between items-center text-xs font-semibold text-slate-700 pt-3 border-t border-blue-200">
+    <div>Số chứng thực: <span class="text-blue-900 font-bold">...................</span> quyển số <span class="text-blue-900 font-bold">.......... <sup>(10)</sup> -SCT/GD</span></div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-6 text-center mt-6">
+    <div>
+      <div class="text-xs font-bold text-slate-800">Người tiếp nhận hồ sơ ký,<br/>ghi rõ họ, tên</div>
+      <div class="h-20"></div>
+    </div>
+    <div>
+      <div class="text-xs font-bold text-slate-800">Người thực hiện chứng thực ký,<br/>ghi rõ họ, tên và đóng dấu</div>
+      <div class="h-20"></div>
+    </div>
+  </div>
+</div>`;
+    }
+
+    // Mặc định Mẫu số 09: Lời chứng chứng thực giao dịch (UBND xã / VP Công chứng)
+    return `
+<div class="mt-8 pt-6 border-t-2 border-dashed border-red-300 bg-red-50/40 p-6 rounded-xl font-serif text-slate-900">
+  <div class="text-right text-xs font-bold text-slate-600 mb-1">Mẫu số 09</div>
+  <div class="text-center font-bold text-red-950 text-base uppercase mb-1">LỜI CHỨNG CHỨNG THỰC GIAO DỊCH</div>
+  <div class="text-center text-xs italic text-slate-500 mb-4">(Ban hành kèm theo Nghị định số 280/2025/NĐ-CP ngày 27/10/2025 của Chính phủ sửa đổi Nghị định 23/2015/NĐ-CP)</div>
+
+  <div class="text-sm leading-relaxed space-y-2 mb-4">
+    <p>Ngày <strong>${d}</strong> tháng <strong>${m}</strong> năm <strong>${y}</strong> (Bằng chữ: ....................................................................) <sup>(1)</sup></p>
+    <p>Tại: <strong>${diaDiem}</strong> <sup>(2)</sup></p>
+    <p>Tôi <sup>(3)</sup>: ...................................................................., là <sup>(4)</sup>: ....................................................................</p>
+    <p class="font-bold">Chứng thực</p>
+    <p>- Giao dịch <sup>(5)</sup>: <strong>${procedure.name || "Giao dịch"}</strong> được giao kết giữa:</p>
+    <div class="pl-4">
+      <p>Bên A: Ông/bà: <strong>${replacements.ben_a_ho_ten || "...................................................."}</strong> <sup>(6)</sup></p>
+      <p>Giấy tờ tùy thân <sup>(7)</sup> số: <strong>${replacements.ben_a_cccd || "...................................."}</strong></p>
+      <p>Bên B: Ông/bà: <strong>${replacements.ben_b_ho_ten || "...................................................."}</strong> <sup>(6)</sup></p>
+      <p>Giấy tờ tùy thân <sup>(7)</sup> số: <strong>${replacements.ben_b_cccd || "...................................."}</strong></p>
+    </div>
+    <p>- Các bên tham gia giao dịch đã cam đoan chịu trách nhiệm trước pháp luật về nội dung của giao dịch.</p>
+    <p>- Tại thời điểm chứng thực, các bên tham gia giao dịch minh mẫn, nhận thức và làm chủ được hành vi của mình; tự nguyện thỏa thuận giao kết giao dịch và đã <strong>${hinhThucKy}</strong> <sup>(8)</sup> vào giao dịch này trước mặt tôi.</p>
+    
+    ${replacements.co_nguoi_lam_chung ? `
+    <div class="p-3 bg-amber-50/80 border-l-4 border-amber-500 rounded text-xs italic text-slate-800">
+      <strong>(*) Người làm chứng:</strong> Ông/bà <strong>${replacements.nguoi_lam_chung_ten || "................................"}</strong>, Giấy tờ tùy thân số <strong>${replacements.nguoi_lam_chung_cccd || "................................"}</strong> do ${replacements.nguoi_lam_chung_noi_cap || "Bộ Công an"} cấp ngày ${replacements.nguoi_lam_chung_ngay_cap || "................"}; lý do: ${replacements.nguoi_lam_chung_ly_do || "người yêu cầu chứng thực không tự đọc/ký được"}; có đủ điều kiện làm chứng theo quy định của pháp luật, trực tiếp chứng kiến việc chứng thực, cam đoan chịu trách nhiệm trước pháp luật về việc làm chứng của mình và đã ký vào từng trang của giao dịch trước sự chứng kiến của người thực hiện chứng thực.
+    </div>` : ''}
+
+    ${replacements.co_nguoi_phien_dich ? `
+    <div class="p-3 bg-emerald-50/80 border-l-4 border-emerald-500 rounded text-xs italic text-slate-800">
+      <strong>(**) Người phiên dịch:</strong> Ông/bà <strong>${replacements.nguoi_phien_dich_ten || "................................"}</strong>, Giấy tờ tùy thân số <strong>${replacements.nguoi_phien_dich_cccd || "................................"}</strong> do ${replacements.nguoi_phien_dich_noi_cap || "Bộ Công an"} cấp ngày ${replacements.nguoi_phien_dich_ngay_cap || "................"}; lý do: ${replacements.nguoi_phien_dich_ly_do || "người yêu cầu chứng thực không thạo tiếng Việt"}; có đủ điều kiện theo quy định của pháp luật, đã dịch đầy đủ, chính xác nội dung giao dịch và lời chứng; cam đoan chịu trách nhiệm trước pháp luật về việc phiên dịch và đã ký vào từng trang của giao dịch trước sự chứng kiến của người thực hiện chứng thực.
+    </div>` : ''}
+
+    <p>Giao dịch này được lập thành <strong>${soBanGoc}</strong> bản gốc (mỗi bản gốc gồm ${soTo} tờ, ${soTrang} trang), cấp cho:<br/>
+    + Bên A: 01 bản gốc;<br/>
+    + Bên B: 01 bản gốc;<br/>
+    Lưu tại <strong>${coQuan}</strong> 01 (một) bản gốc.</p>
+  </div>
+
+  <div class="flex justify-between items-center text-xs font-semibold text-slate-700 pt-3 border-t border-red-200">
+    <div>Số chứng thực: <span class="text-red-700 font-bold">...................</span> quyển số <span class="text-red-700 font-bold">.......... <sup>(9)</sup> -SCT/GD</span></div>
+  </div>
+
+  <div class="text-right mt-6">
+    <div class="text-xs font-bold uppercase text-slate-800">Người thực hiện chứng thực ký, ghi rõ họ, tên và đóng dấu</div>
     <div class="h-20"></div>
   </div>
 </div>`;
