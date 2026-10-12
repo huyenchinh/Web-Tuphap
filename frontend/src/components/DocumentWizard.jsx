@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowLeft, Download, Printer, Copy, Sparkles, Check, RefreshCw, 
   Eye, FileText, AlertCircle, ShieldAlert, CheckCircle2, ChevronRight, ChevronLeft, 
-  Loader2, ZoomIn, ZoomOut, Maximize2, Minimize2, Wand2, Receipt
+  Loader2, ZoomIn, ZoomOut, Maximize2, Minimize2, Wand2, Receipt,
+  Camera, UploadCloud, X, FileCheck, Scale
 } from 'lucide-react';
 import { api } from '../services/api';
 
@@ -20,6 +21,16 @@ export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast
   const [copySuccess, setCopySuccess] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(100);
   const [isFullscreenPreview, setIsFullscreenPreview] = useState(false);
+
+  // AI OCR States
+  const [isOcrOpen, setIsOcrOpen] = useState(false);
+  const [ocrLoading, setOcrLoading] = useState(false);
+  const [ocrDocType, setOcrDocType] = useState('cccd'); // 'cccd' | 'sodo' | 'xe'
+  const [ocrTargetGroup, setOcrTargetGroup] = useState('bena'); // 'bena' | 'benb' | 'taisan'
+  const [ocrExtractedData, setOcrExtractedData] = useState(null);
+
+  // Certification Type according to Circular 01/2020/TT-BTP
+  const [certificationType, setCertificationType] = useState('tu_ky'); // 'tu_ky' | 'diem_chi' | 'nguoi_lam_chung' | 'phien_dich'
 
   const previewDebounceRef = useRef(null);
 
@@ -119,6 +130,116 @@ export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast
       setAiResult(null);
       setAiDraft('');
     }
+  };
+
+  // Run AI OCR Vision
+  const handleRunOcr = async (demo = false, file = null) => {
+    try {
+      setOcrLoading(true);
+      let imageBase64 = '';
+      let mimeType = 'image/jpeg';
+
+      if (file) {
+        imageBase64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result.split(',')[1]);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        mimeType = file.type || 'image/jpeg';
+      }
+
+      const extracted = await api.extractDocumentOCR({
+        imageBase64,
+        mimeType,
+        docType: ocrDocType
+      });
+
+      setOcrExtractedData(extracted);
+    } catch (err) {
+      alert("Lỗi nhận diện OCR: " + err.message);
+    } finally {
+      setOcrLoading(false);
+    }
+  };
+
+  // Apply OCR extracted data to form
+  const handleApplyOcrToForm = () => {
+    if (!ocrExtractedData) return;
+    const updated = { ...formData };
+
+    if (ocrDocType === 'cccd') {
+      if (ocrTargetGroup === 'bena') {
+        Object.keys(updated).forEach(k => {
+          if (k.includes('ben_a_ho_ten') || k.includes('nguoi_nop_chong') || k.includes('chong_ho_ten') || k.includes('ben_cho_vay_ten') || k.includes('nguoi_khoi_kien_ten') || k.includes('nguoi_yeu_cau_ten') || k.includes('nguoi_lao_dong_ten') || k.includes('nguoi_yeu_cau')) {
+            updated[k] = ocrExtractedData.ho_ten;
+          }
+          if (k.includes('ben_a_cccd') || k.includes('chong_cccd') || k.includes('ben_cho_vay_cccd') || k.includes('nguoi_khoi_kien_cccd') || k.includes('nguoi_yeu_cau_cccd') || k.includes('nguoi_lao_dong_cccd') || k.includes('cccd')) {
+            updated[k] = ocrExtractedData.so_cccd;
+          }
+          if (k.includes('ben_a_ngay_cap') || k.includes('chong_ngay_cap')) {
+            updated[k] = ocrExtractedData.ngay_cap;
+          }
+          if (k.includes('ben_a_noi_cap')) {
+            updated[k] = ocrExtractedData.noi_cap;
+          }
+          if (k.includes('ben_a_dia_chi') || k.includes('chong_dia_chi') || k.includes('nguoi_khoi_kien_dia_chi') || k.includes('nguoi_yeu_cau_dia_chi')) {
+            updated[k] = ocrExtractedData.noi_thuong_tru;
+          }
+        });
+      } else {
+        Object.keys(updated).forEach(k => {
+          if (k.includes('ben_b_ho_ten') || k.includes('nguoi_nop_vo') || k.includes('vo_ho_ten') || k.includes('ben_vay_ten') || k.includes('nguoi_bi_kien_ten') || k.includes('ben_tranh_chap_ten')) {
+            updated[k] = ocrExtractedData.ho_ten;
+          }
+          if (k.includes('ben_b_cccd') || k.includes('vo_cccd') || k.includes('ben_vay_cccd') || k.includes('nguoi_bi_kien_cccd')) {
+            updated[k] = ocrExtractedData.so_cccd;
+          }
+          if (k.includes('ben_b_ngay_cap') || k.includes('vo_ngay_cap')) {
+            updated[k] = ocrExtractedData.ngay_cap;
+          }
+          if (k.includes('ben_b_noi_cap')) {
+            updated[k] = ocrExtractedData.noi_cap;
+          }
+          if (k.includes('ben_b_dia_chi') || k.includes('vo_dia_chi') || k.includes('nguoi_bi_kien_dia_chi') || k.includes('ben_tranh_chap_dia_chi')) {
+            updated[k] = ocrExtractedData.noi_thuong_tru;
+          }
+        });
+      }
+    } else if (ocrDocType === 'sodo') {
+      Object.keys(updated).forEach(k => {
+        if (k.includes('thua_dat_so') || k.includes('thua_dat')) {
+          updated[k] = ocrExtractedData.thua_dat_so;
+        }
+        if (k.includes('to_ban_do_so') || k.includes('to_ban_do')) {
+          updated[k] = ocrExtractedData.to_ban_do_so;
+        }
+        if (k.includes('dia_chi_thua_dat') || k.includes('dia_chi_dat')) {
+          updated[k] = ocrExtractedData.dia_chi_thua_dat;
+        }
+        if (k.includes('dien_tich')) {
+          updated[k] = ocrExtractedData.dien_tich;
+        }
+        if (k.includes('so_giay_chung_nhan') || k.includes('giay_to_so_huu')) {
+          updated[k] = ocrExtractedData.so_giay_chung_nhan;
+        }
+      });
+    } else if (ocrDocType === 'xe') {
+      Object.keys(updated).forEach(k => {
+        if (k.includes('bien_so_xe')) updated[k] = ocrExtractedData.bien_so_xe;
+        if (k.includes('so_khung')) updated[k] = ocrExtractedData.so_khung;
+        if (k.includes('so_may')) updated[k] = ocrExtractedData.so_may;
+        if (k.includes('tai_san_ten')) updated[k] = ocrExtractedData.nhan_hieu;
+      });
+    }
+
+    setFormData(updated);
+    setIsOcrOpen(false);
+    setOcrExtractedData(null);
+    if (onShowSuccessToast) onShowSuccessToast('Đã trích xuất & tự động điền dữ liệu thành công!');
+
+    // Refresh live preview
+    api.getPreview(procedureId, updated).then(html => setPreviewHtml(html)).catch(console.error);
   };
 
   // Download Word .docx file
@@ -277,6 +398,38 @@ export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast
             </div>
           </div>
 
+          {/* Quick AI OCR Scan Launcher */}
+          {['bena', 'benb', 'taisan'].includes(currentStepData?.id) && (
+            <div className="mb-4 p-3.5 bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 border border-blue-200/90 rounded-2xl flex items-center justify-between gap-3 shadow-2xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs">
+                  <Camera className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-900">
+                    {currentStepData.id === 'taisan' ? 'Quét Sổ đỏ / Giấy tờ xe tự động' : 'Quét CCCD tự động điền form'}
+                  </div>
+                  <div className="text-[11px] text-slate-500">
+                    AI Vision trích xuất thông tin tức thì, không cần gõ tay
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setOcrDocType(currentStepData.id === 'taisan' ? (procedureId.includes('xe') || procedureId.includes('dong-san') ? 'xe' : 'sodo') : 'cccd');
+                  setOcrTargetGroup(currentStepData.id);
+                  setOcrExtractedData(null);
+                  setIsOcrOpen(true);
+                }}
+                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-sm transition-all active:scale-95 flex items-center gap-1.5 flex-shrink-0"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <span>Quét ngay</span>
+              </button>
+            </div>
+          )}
+
           {/* Form Fields for current step */}
           <div className="space-y-4 flex-1">
             {currentStepData?.fields.map(field => {
@@ -396,6 +549,29 @@ export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast
                 </div>
               );
             })}
+
+            {/* Circular 01/2020/TT-BTP Certification Selector */}
+            {currentStepData?.id === 'dieuphap' && (
+              <div className="mt-4 p-4 bg-blue-50/60 border border-blue-200/90 rounded-2xl space-y-2">
+                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                  <Scale className="w-4 h-4 text-blue-600" />
+                  <span>Hình thức Lời chứng tư pháp (Thông tư 01/2020/TT-BTP)</span>
+                </label>
+                <select
+                  value={certificationType}
+                  onChange={(e) => setCertificationType(e.target.value)}
+                  className="w-full text-xs sm:text-sm bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="tu_ky">Mẫu 01: Các bên tự ký trước mặt người thực hiện chứng thực</option>
+                  <option value="diem_chi">Mẫu 02: Người yêu cầu điểm chỉ (không biết chữ/không ký được)</option>
+                  <option value="nguoi_lam_chung">Mẫu 03: Có người làm chứng theo Điều 36 Nghị định 23/2015</option>
+                  <option value="phien_dich">Mẫu 04: Có người phiên dịch (người yêu cầu không thạo tiếng Việt)</option>
+                </select>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  Hệ thống tự động đồng bộ mẫu lời chứng chuẩn của Bộ Tư pháp và quy cách ký tên/điểm chỉ tương ứng vào trang cuối của văn bản Word và bản in PDF.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Wizard Step Navigation */}
@@ -498,6 +674,139 @@ export default function DocumentWizard({ procedureId, onBack, onShowSuccessToast
           </div>
         </div>
       </div>
+
+      {/* AI Vision OCR Modal */}
+      {isOcrOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-page-enter">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-7 border border-slate-200 relative overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md">
+                  <Camera className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900">
+                    Trợ Lý AI Vision Quét Giấy Tờ
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Tự động nhận dạng và điền vào: <strong className="text-blue-600">{ocrTargetGroup === 'bena' ? 'Bên A' : ocrTargetGroup === 'benb' ? 'Bên B' : 'Tài sản & Giấy tờ'}</strong>
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => { setIsOcrOpen(false); setOcrExtractedData(null); }}
+                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Doc Type Selector */}
+            <div className="my-4">
+              <label className="text-xs font-bold text-slate-700 block mb-2">
+                Chọn loại giấy tờ cần quét:
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { id: 'cccd', label: 'CCCD Gắn Chip' },
+                  { id: 'sodo', label: 'Sổ Đỏ (QSDĐ)' },
+                  { id: 'xe', label: 'Đăng Ký Xe' }
+                ].map(t => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => { setOcrDocType(t.id); setOcrExtractedData(null); }}
+                    className={`py-2 px-1 text-center rounded-xl text-xs font-bold border transition-all ${
+                      ocrDocType === t.id
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                        : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Upload Zone */}
+            <div className="my-4 p-5 rounded-2xl border-2 border-dashed border-slate-300 hover:border-blue-400 bg-slate-50/70 text-center transition-all">
+              <UploadCloud className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+              <div className="text-xs font-bold text-slate-700 mb-1">
+                Tải lên ảnh chụp {ocrDocType === 'cccd' ? 'CCCD 2 mặt' : ocrDocType === 'sodo' ? 'Trang 2-3 Sổ đỏ' : 'Cà-vẹt xe'}
+              </div>
+              <p className="text-[11px] text-slate-400 mb-3">Hỗ trợ JPG, PNG, WEBP (Tối đa 5MB)</p>
+              
+              <label className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-sm cursor-pointer active:scale-95 transition-all">
+                <span>Chọn file ảnh từ thiết bị</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) handleRunOcr(false, f);
+                  }}
+                />
+              </label>
+
+              <div className="my-2.5 flex items-center gap-2 justify-center text-[11px] text-slate-400">
+                <span className="w-12 h-px bg-slate-200"></span>
+                <span>HOẶC</span>
+                <span className="w-12 h-px bg-slate-200"></span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleRunOcr(true, null)}
+                disabled={ocrLoading}
+                className="text-xs font-bold text-indigo-600 hover:text-indigo-800 underline inline-flex items-center gap-1"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Dùng mẫu giấy tờ thử nghiệm (1-Click)</span>
+              </button>
+            </div>
+
+            {/* OCR Extracted Preview */}
+            {ocrLoading && (
+              <div className="p-4 bg-blue-50/70 border border-blue-200 rounded-2xl flex items-center justify-center gap-2.5 text-xs text-blue-800 font-semibold my-3 animate-pulse">
+                <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+                <span>AI Vision đang quét và trích xuất dữ liệu thực thể...</span>
+              </div>
+            )}
+
+            {ocrExtractedData && !ocrLoading && (
+              <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-2xl space-y-2.5 my-3 animate-page-enter">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-800">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>Dữ liệu AI đã trích xuất thành công:</span>
+                </div>
+                <div className="text-xs text-slate-700 font-mono space-y-1 bg-white p-3 rounded-xl border border-emerald-100 max-h-36 overflow-y-auto">
+                  {Object.entries(ocrExtractedData).map(([k, v]) => (
+                    <div key={k} className="flex justify-between border-b border-slate-100 pb-0.5 last:border-0">
+                      <span className="text-slate-400 font-sans">{k}:</span>
+                      <strong className="text-slate-800 text-right">{String(v)}</strong>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleApplyOcrToForm}
+                  className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-1.5 active:scale-95"
+                >
+                  <FileCheck className="w-4 h-4" />
+                  <span>Áp dụng & Tự động điền vào Form ngay</span>
+                </button>
+              </div>
+            )}
+
+            {/* Footer Notice */}
+            <div className="mt-3 text-center text-[10px] text-slate-400">
+              Công nghệ bảo mật cục bộ: Hình ảnh giấy tờ chỉ phục vụ trích xuất tức thời và không bị lưu trữ trên hệ thống.
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

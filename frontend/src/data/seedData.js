@@ -1214,6 +1214,806 @@ export const initialData = {
           ]
         }
       ]
+    },
+    {
+      "id": "hon-nhan-gia-dinh",
+      "name": "6. Hôn nhân, Gia đình & Trẻ em",
+      "icon": "Users",
+      "description": "Đơn thuận tình ly hôn, thỏa thuận nuôi con và cấp dưỡng, chia tài sản vợ chồng...",
+      "procedures": [
+        {
+          "id": "thuan-tinh-ly-hon",
+          "title": "Đơn yêu cầu công nhận thuận tình ly hôn, nuôi con và tài sản",
+          "code": "DON-TT-LH",
+          "aiFieldKey": "ly_do_ly_hon",
+          "aiFieldLabel": "Lý do mâu thuẫn hôn nhân & Nguyện vọng giải quyết (Có AI hỗ trợ)",
+          "description": "Mẫu đơn chuẩn gửi Tòa án nhân dân có thẩm quyền yêu cầu công nhận thuận tình ly hôn theo Điều 55 Luật Hôn nhân & Gia đình 2014.",
+          "fields": [
+            {
+              "key": "nguoi_nop_chong",
+              "label": "Họ và tên Người chồng",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "NGUYỄN VĂN A"
+            },
+            {
+              "key": "chong_cccd",
+              "label": "Số CCCD/Định danh người chồng",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "001090012345"
+            },
+            {
+              "key": "chong_ngay_cap",
+              "label": "Ngày cấp CCCD người chồng",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "15/05/2021"
+            },
+            {
+              "key": "chong_dia_chi",
+              "label": "Nơi cư trú người chồng",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "Số 123 Đường Láng, Đống Đa, Hà Nội"
+            },
+            {
+              "key": "chong_dien_thoai",
+              "label": "Số điện thoại người chồng",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "0912345678"
+            },
+            {
+              "key": "nguoi_nop_vo",
+              "label": "Họ và tên Người vợ",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "TRẦN THỊ B"
+            },
+            {
+              "key": "vo_cccd",
+              "label": "Số CCCD/Định danh người vợ",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "036195009876"
+            },
+            {
+              "key": "vo_ngay_cap",
+              "label": "Ngày cấp CCCD người vợ",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "20/10/2022"
+            },
+            {
+              "key": "vo_dia_chi",
+              "label": "Nơi cư trú người vợ",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Phường Dịch Vọng Hậu, Cầu Giấy, Hà Nội"
+            },
+            {
+              "key": "vo_dien_thoai",
+              "label": "Số điện thoại người vợ",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "0987654321"
+            },
+            {
+              "key": "toa_an_nhan_dan",
+              "label": "Tòa án nhân dân thụ lý giải quyết",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Tòa án nhân dân quận Cầu Giấy, TP. Hà Nội"
+            },
+            {
+              "key": "thong_tin_ket_hon",
+              "label": "Giấy chứng nhận kết hôn số / Nơi đăng ký",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "GCN kết hôn số 45/2018 do UBND phường Dịch Vọng Hậu cấp ngày 10/10/2018"
+            },
+            {
+              "key": "thoa_thuan_con_chung",
+              "label": "Thỏa thuận về con chung và cấp dưỡng",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Có 01 con chung là Nguyễn Văn C (SN 2020), giao cho mẹ trực tiếp nuôi dưỡng, bố cấp dưỡng 5.000.000đ/tháng"
+            },
+            {
+              "key": "thoa_thuan_tai_san",
+              "label": "Thỏa thuận về tài sản chung và công nợ",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Tự thỏa thuận không yêu cầu Tòa án giải quyết / hoặc không có tài sản và công nợ chung"
+            },
+            {
+              "key": "ly_do_ly_hon",
+              "label": "Trình bày lý do mâu thuẫn & nguyện vọng ly hôn (Có AI hỗ trợ)",
+              "type": "textarea",
+              "required": true,
+              "group": "dieuphap",
+              "placeholder": "Hai vợ chồng phát sinh nhiều bất đồng quan điểm sống, tính tình không hòa hợp, đời sống chung không thể kéo dài, mục đích hôn nhân không đạt được..."
+            }
+          ],
+          "templateContent": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n------------------\n\nĐƠN YÊU CẦU CÔNG NHẬN THUẬN TÌNH LY HÔN,\nNUÔI CON VÀ CHIA TÀI SẢN KHI LY HÔN\n\nKính gửi: {{toa_an_nhan_dan}}\n\nChúng tôi gồm có:\n1. Người yêu cầu thứ nhất (Chồng):\n- Họ và tên: {{nguoi_nop_chong}}\n- Số CCCD/Định danh: {{chong_cccd}} cấp ngày {{chong_ngay_cap}}\n- Nơi cư trú: {{chong_dia_chi}}\n- Số điện thoại: {{chong_dien_thoai}}\n\n2. Người yêu cầu thứ hai (Vợ):\n- Họ và tên: {{nguoi_nop_vo}}\n- Số CCCD/Định danh: {{vo_cccd}} cấp ngày {{vo_ngay_cap}}\n- Nơi cư trú: {{vo_dia_chi}}\n- Số điện thoại: {{vo_dien_thoai}}\n\nChúng tôi làm đơn này xin trình bày với Quý Tòa một việc như sau:\n\nI. VỀ QUAN HỆ HÔN NHÂN:\nChúng tôi kết hôn trên cơ sở tự nguyện, có đăng ký kết hôn tại: {{thong_tin_ket_hon}}.\nLý do xin ly hôn: {{ly_do_ly_hon}}\nNhận thấy tình cảm vợ chồng không còn, mục đích hôn nhân không đạt được, chúng tôi cùng tự nguyện làm đơn này kính đề nghị Quý Tòa công nhận thuận tình ly hôn.\n\nII. VỀ CON CHUNG VÀ CẤP DƯỠNG:\n{{thoa_thuan_con_chung}}\n\nIII. VỀ TÀI SẢN CHUNG VÀ NỢ CHUNG:\n{{thoa_thuan_tai_san}}\n\nKính đề nghị Quý Tòa thụ lý và giải quyết theo quy định của pháp luật."
+        },
+        {
+          "id": "thoa-thuan-tai-san-vo-chong",
+          "title": "Văn bản thỏa thuận phân chia tài sản chung vợ chồng trong thời kỳ hôn nhân",
+          "code": "VB-TTS-VC",
+          "aiFieldKey": "cam_ket_tai_chinh",
+          "aiFieldLabel": "Cam kết nghĩa vụ tài sản đối với bên thứ ba (Có AI hỗ trợ chuốt chuẩn)",
+          "description": "Văn bản thỏa thuận xác lập tài sản riêng hoặc phân chia tài sản chung theo Điều 38, 39, 40 Luật Hôn nhân & Gia đình 2014.",
+          "fields": [
+            {
+              "key": "chong_ho_ten",
+              "label": "Họ và tên Chồng (Bên A)",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "NGUYỄN VĂN A"
+            },
+            {
+              "key": "chong_cccd",
+              "label": "Số CCCD Chồng",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "001090012345"
+            },
+            {
+              "key": "chong_dia_chi",
+              "label": "Nơi cư trú Chồng",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "Số 123 Đường Láng, Hà Nội"
+            },
+            {
+              "key": "vo_ho_ten",
+              "label": "Họ và tên Vợ (Bên B)",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "TRẦN THỊ B"
+            },
+            {
+              "key": "vo_cccd",
+              "label": "Số CCCD Vợ",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "036195009876"
+            },
+            {
+              "key": "vo_dia_chi",
+              "label": "Nơi cư trú Vợ",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Phường Dịch Vọng Hậu, Cầu Giấy, Hà Nội"
+            },
+            {
+              "key": "tai_san_phan_chia",
+              "label": "Mô tả chi tiết tài sản chung thỏa thuận phân chia",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Nhà đất tại thửa đất số 50, tờ bản đồ 15 tại phường Dịch Vọng Hậu theo GCN số CS-12345"
+            },
+            {
+              "key": "phuong_an_chia",
+              "label": "Phương án phân chia cụ thể (Ai sở hữu phần nào)",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Bên A (Chồng) được toàn quyền sở hữu, sử dụng trọn vẹn nhà đất nêu trên và thanh toán tiền bù đắp cho Bên B"
+            },
+            {
+              "key": "cam_ket_tai_chinh",
+              "label": "Cam kết trách nhiệm tài sản & nợ chung đối với bên thứ ba (Có AI hỗ trợ)",
+              "type": "textarea",
+              "required": true,
+              "group": "dieuphap",
+              "placeholder": "Hai bên cam đoan việc phân chia tài sản này hoàn toàn tự nguyện, không nhằm trốn tránh việc thực hiện bất kỳ nghĩa vụ tài sản nào đối với Nhà nước, ngân hàng hay bất kỳ bên thứ ba nào..."
+            }
+          ],
+          "templateContent": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n------------------\n\nVĂN BẢN THỎA THUẬN PHÂN CHIA TÀI SẢN CHUNG TRONG THỜI KỲ HÔN NHÂN\n\nHôm nay, ngày {{ngay_lap}} tháng {{thang_lap}} năm {{nam_lap}}, tại UBND {{co_quan_chung_thuc}}, chúng tôi gồm có:\n\nBÊN A (CHỒNG):\n- Ông: {{chong_ho_ten}}\n- CCCD số: {{chong_cccd}}\n- Cư trú tại: {{chong_dia_chi}}\n\nBÊN B (VỢ):\n- Bà: {{vo_ho_ten}}\n- CCCD số: {{vo_cccd}}\n- Cư trú tại: {{vo_dia_chi}}\n\nHai bên tự nguyện thỏa thuận việc phân chia tài sản chung trong thời kỳ hôn nhân như sau:\n\nĐIỀU 1: TÀI SẢN CHUNG ĐƯỢC PHÂN CHIA\n{{tai_san_phan_chia}}\n\nĐIỀU 2: PHƯƠNG ÁN PHÂN CHIA CỤ THỂ\n{{phuong_an_chia}}\n\nĐIỀU 3: CAM KẾT VỀ NGHĨA VỤ TÀI CHÍNH ĐỐI VỚI BÊN THỨ BA\n{{cam_ket_tai_chinh}}\n\nĐIỀU 4: HIỆU LỰC CỦA VĂN BẢN\nVăn bản này có hiệu lực kể từ ngày được cơ quan có thẩm quyền chứng thực theo quy định của pháp luật."
+        }
+      ]
+    },
+    {
+      "id": "dan-su-doi-no",
+      "name": "7. Nghĩa vụ Dân sự & Đòi nợ, Bồi thường",
+      "icon": "Scale",
+      "description": "Giấy nhận nợ và cam kết thanh toán, Đơn khởi kiện đòi nợ tại Tòa án nhân dân...",
+      "procedures": [
+        {
+          "id": "giay-nhan-no-cam-ket",
+          "title": "Giấy xác nhận nợ và cam kết thanh toán (Có giá trị ràng buộc cao)",
+          "code": "GNN-CK",
+          "aiFieldKey": "che_tai_vi_pham",
+          "aiFieldLabel": "Chế tài phạt chậm trả & Thỏa thuận xử lý tài sản bảo đảm (Có AI hỗ trợ)",
+          "description": "Văn bản xác nhận nghĩa vụ trả nợ, thời hạn hoàn trả và chế tài phạt vi phạm theo Điều 463 - 470 Bộ luật Dân sự 2015.",
+          "fields": [
+            {
+              "key": "ben_cho_vay_ten",
+              "label": "Họ và tên Bên cho vay / Chủ nợ (Bên A)",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "NGUYỄN VĂN A"
+            },
+            {
+              "key": "ben_cho_vay_cccd",
+              "label": "Số CCCD Bên A",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "001090012345"
+            },
+            {
+              "key": "ben_cho_vay_dia_chi",
+              "label": "Nơi cư trú Bên A",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "Số 10 Tràng Tiền, Hoàn Kiếm, Hà Nội"
+            },
+            {
+              "key": "ben_vay_ten",
+              "label": "Họ và tên Bên vay nợ (Bên B)",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "LÊ VĂN B"
+            },
+            {
+              "key": "ben_vay_cccd",
+              "label": "Số CCCD Bên B",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "036195009876"
+            },
+            {
+              "key": "ben_vay_dia_chi",
+              "label": "Nơi cư trú Bên B",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Xã Tiền Phong, Mê Linh, Hà Nội"
+            },
+            {
+              "key": "ben_vay_sdt",
+              "label": "Số điện thoại Bên B",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "0977889900"
+            },
+            {
+              "key": "so_tien_no_so",
+              "label": "Số tiền nợ (Bằng số VNĐ)",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "300.000.000"
+            },
+            {
+              "key": "so_tien_no_chu",
+              "label": "Số tiền nợ (Bằng chữ)",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Ba trăm triệu đồng chẵn"
+            },
+            {
+              "key": "thoi_han_tra_cuoi",
+              "label": "Thời hạn thanh toán cuối cùng",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Ngày 30 tháng 12 năm 2026"
+            },
+            {
+              "key": "phuong_thuc_thanh_toan",
+              "label": "Phương thức thanh toán tiền nợ",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Chuyển khoản qua số tài khoản 123456789 tại Ngân hàng Vietcombank mang tên Bên A"
+            },
+            {
+              "key": "che_tai_vi_pham",
+              "label": "Chế tài chậm trả & Cam kết xử lý tài sản bảo đảm (Có AI hỗ trợ)",
+              "type": "textarea",
+              "required": true,
+              "group": "dieuphap",
+              "placeholder": "Nếu quá hạn nêu trên mà Bên B chưa thanh toán hết, Bên B phải chịu lãi suất chậm trả bằng 150% lãi suất cơ bản và đồng ý bàn giao tài sản cho Bên A để cấn trừ nợ..."
+            }
+          ],
+          "templateContent": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n------------------\n\nGIẤY XÁC NHẬN NỢ VÀ CAM KẾT THANH TOÁN TIỀN\n\nHôm nay, ngày {{ngay_lap}} tháng {{thang_lap}} năm {{nam_lap}}, chúng tôi gồm:\n\nBÊN CHO VAY / CHỦ NỢ (BÊN A):\n- Họ và tên: {{ben_cho_vay_ten}}\n- CCCD số: {{ben_cho_vay_cccd}}\n- Cư trú tại: {{ben_cho_vay_dia_chi}}\n\nBÊN VAY NỢ / NGƯỜI CAM KẾT (BÊN B):\n- Họ và tên: {{ben_vay_ten}}\n- CCCD số: {{ben_vay_cccd}}\n- Cư trú tại: {{ben_vay_dia_chi}}\n- Số điện thoại liên hệ: {{ben_vay_sdt}}\n\nBên B tự nguyện xác nhận và cam kết trước Bên A các nội dung sau:\n\n1. SỐ TIỀN NỢ XÁC NHẬN:\nBên B thừa nhận tính đến thời điểm hiện tại còn nợ Bên A số tiền là:\n- Bằng số: {{so_tien_no_so}} VNĐ.\n- Bằng chữ: {{so_tien_no_chu}}.\n\n2. THỜI HẠN VÀ PHƯƠNG THỨC THANH TOÁN:\n- Thời hạn thanh toán dứt điểm: {{thoi_han_tra_cuoi}}.\n- Phương thức thanh toán: {{phuong_thuc_thanh_toan}}.\n\n3. CHẾ TÀI PHẠT VI PHẠM VÀ CAM KẾT THỰC HIỆN:\n{{che_tai_vi_pham}}\n\nGiấy này được lập thành 02 bản có giá trị pháp lý như nhau, mỗi bên giữ 01 bản để làm chứng cứ thực hiện nghĩa vụ."
+        },
+        {
+          "id": "don-khoi-kien-doi-no",
+          "title": "Đơn khởi kiện vụ án dân sự (Đòi tiền nợ & bồi thường thiệt hại)",
+          "code": "DKK-DS",
+          "aiFieldKey": "noi_dung_khoi_kien",
+          "aiFieldLabel": "Diễn biến sự việc & Căn cứ khởi kiện (Có AI hỗ trợ)",
+          "description": "Mẫu đơn số 23-DS chuẩn Nghị quyết 01/2017/NQ-HĐTP gửi Tòa án nhân dân cấp huyện khởi kiện bên vay nợ cố tình chây ì không trả.",
+          "fields": [
+            {
+              "key": "nguoi_khoi_kien_ten",
+              "label": "Họ và tên Người khởi kiện (Nguyên đơn)",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "NGUYỄN VĂN A"
+            },
+            {
+              "key": "nguoi_khoi_kien_cccd",
+              "label": "Số CCCD Người khởi kiện",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "001090012345"
+            },
+            {
+              "key": "nguoi_khoi_kien_dia_chi",
+              "label": "Địa chỉ cư trú Người khởi kiện",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "Số 50 Phố Huế, Hai Bà Trưng, Hà Nội"
+            },
+            {
+              "key": "nguoi_khoi_kien_sdt",
+              "label": "Điện thoại Người khởi kiện",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "0912345678"
+            },
+            {
+              "key": "nguoi_bi_kien_ten",
+              "label": "Họ và tên Người bị kiện (Bị đơn)",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "TRẦN VĂN B"
+            },
+            {
+              "key": "nguoi_bi_kien_dia_chi",
+              "label": "Địa chỉ cư trú Người bị kiện",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Số 88 Đường Cầu Giấy, Cầu Giấy, Hà Nội"
+            },
+            {
+              "key": "nguoi_bi_kien_sdt",
+              "label": "Điện thoại Người bị kiện",
+              "type": "text",
+              "required": false,
+              "group": "benb",
+              "placeholder": "0988776655"
+            },
+            {
+              "key": "toa_an_thu_ly",
+              "label": "Tòa án nhân dân có thẩm quyền thụ lý",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Tòa án nhân dân quận Cầu Giấy, thành phố Hà Nội"
+            },
+            {
+              "key": "so_tien_khoi_kien_goc",
+              "label": "Số tiền nợ gốc yêu cầu đòi (VNĐ)",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "500.000.000"
+            },
+            {
+              "key": "so_tien_khoi_kien_lai",
+              "label": "Số tiền lãi phát sinh yêu cầu đòi (VNĐ)",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "50.000.000"
+            },
+            {
+              "key": "noi_dung_khoi_kien",
+              "label": "Tóm tắt sự việc cho vay nợ và quá trình đòi nợ không thành (Có AI hỗ trợ)",
+              "type": "textarea",
+              "required": true,
+              "group": "dieuphap",
+              "placeholder": "Vào ngày... Bên B có vay của tôi số tiền... hẹn ngày... trả nợ. Tuy nhiên đến nay Bên B cố tình lẩn tránh không thực hiện nghĩa vụ dù tôi đã nhiều lần đôn đốc nhắc nhở..."
+            }
+          ],
+          "templateContent": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n------------------\n\nĐƠN KHỞI KIỆN VỤ ÁN DÂN SỰ\n(V/v: Tranh chấp hợp đồng vay tài sản)\n\nKính gửi: {{toa_an_thu_ly}}\n\nNGƯỜI KHỞI KIỆN (NGUYÊN ĐƠN):\n- Họ và tên: {{nguoi_khoi_kien_ten}}\n- CCCD: {{nguoi_khoi_kien_cccd}}\n- Địa chỉ: {{nguoi_khoi_kien_dia_chi}}\n- Số điện thoại: {{nguoi_khoi_kien_sdt}}\n\nNGƯỜI BỊ KIỆN (BỊ ĐƠN):\n- Họ và tên: {{nguoi_bi_kien_ten}}\n- Địa chỉ: {{nguoi_bi_kien_dia_chi}}\n- Số điện thoại: {{nguoi_bi_kien_sdt}}\n\nNỘI DUNG VỤ VIỆC:\n{{noi_dung_khoi_kien}}\n\nYÊU CẦU TÒA ÁN GIẢI QUYẾT NHỮNG VẤN ĐỀ SAU ĐÂY:\n1. Buộc bị đơn {{nguoi_bi_kien_ten}} phải hoàn trả cho tôi số tiền nợ gốc là: {{so_tien_khoi_kien_goc}} VNĐ.\n2. Buộc bị đơn phải thanh toán số tiền lãi theo quy định của pháp luật là: {{so_tien_khoi_kien_lai}} VNĐ.\n3. Buộc bị đơn chịu toàn bộ án phí dân sự theo quy định của pháp luật.\n\nDANH MỤC TÀI LIỆU, CHỨNG CỨ KÈM THEO:\n1. Bản sao Giấy nhận nợ / Giấy chuyển khoản ngân hàng.\n2. Bản sao CCCD của người khởi kiện.\n3. Vi bằng / Tin nhắn trao đổi đòi nợ (nếu có)."
+        }
+      ]
+    },
+    {
+      "id": "lao-dong-viec-lam",
+      "name": "8. Lao động, Tiền lương & Bảo hiểm Xã hội",
+      "icon": "Briefcase",
+      "description": "Đơn khiếu nại chấm dứt HĐLĐ trái luật, Đơn tố cáo chậm trả lương & nợ BHXH...",
+      "procedures": [
+        {
+          "id": "khieu-nai-sa-thai-trai-luat",
+          "title": "Đơn khiếu nại quyết định chấm dứt hợp đồng lao động trái pháp luật",
+          "code": "KN-HĐLĐ",
+          "aiFieldKey": "ly_do_khieu_nai",
+          "aiFieldLabel": "Căn cứ chứng minh Công ty chấm dứt HĐLĐ trái pháp luật (Có AI hỗ trợ)",
+          "description": "Văn bản khiếu nại gửi Ban Giám đốc Công ty yêu cầu bồi thường và khôi phục quyền lợi theo Điều 41 Bộ luật Lao động 2019.",
+          "fields": [
+            {
+              "key": "nguoi_lao_dong_ten",
+              "label": "Họ và tên Người lao động (Người khiếu nại)",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "NGUYỄN VĂN A"
+            },
+            {
+              "key": "nguoi_lao_dong_cccd",
+              "label": "Số CCCD",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "001090012345"
+            },
+            {
+              "key": "nguoi_lao_dong_dia_chi",
+              "label": "Nơi cư trú",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "Số 45 Lê Văn Lương, Thanh Xuân, Hà Nội"
+            },
+            {
+              "key": "nguoi_lao_dong_sdt",
+              "label": "Số điện thoại",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "0912345678"
+            },
+            {
+              "key": "ten_cong_ty",
+              "label": "Tên Công ty / Người sử dụng lao động",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Công ty Cổ phần Thương mại và Dịch vụ XYZ"
+            },
+            {
+              "key": "dia_chi_cong_ty",
+              "label": "Địa chỉ trụ sở Công ty",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Tầng 5 Tòa nhà Keangnam, Nam Từ Liêm, Hà Nội"
+            },
+            {
+              "key": "nguoi_dai_dien_phap_luat",
+              "label": "Người đại diện theo pháp luật (Giám đốc)",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Ông Trần Văn Giám Đốc"
+            },
+            {
+              "key": "vi_tri_viec_lam",
+              "label": "Vị trí công việc & Thời gian làm việc",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Trưởng nhóm Kỹ thuật theo HĐLĐ số 12/HĐLĐ ký ngày 01/01/2023"
+            },
+            {
+              "key": "quyet_dinh_sa_thai_so",
+              "label": "Số Quyết định cho thôi việc / sa thải",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Quyết định số 88/QĐ-XYZ ngày 15/01/2026"
+            },
+            {
+              "key": "muc_luong_thang",
+              "label": "Mức lương thỏa thuận hàng tháng (VNĐ)",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "25.000.000"
+            },
+            {
+              "key": "ly_do_khieu_nai",
+              "label": "Căn cứ chứng minh việc sa thải là trái quy định Bộ luật Lao động (Có AI hỗ trợ)",
+              "type": "textarea",
+              "required": true,
+              "group": "dieuphap",
+              "placeholder": "Công ty không thông báo trước theo quy định Điều 36 BLLĐ, không có lý do chính đáng và không tổ chức họp xử lý kỷ luật lao động có sự tham gia của công đoàn..."
+            }
+          ],
+          "templateContent": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n------------------\n\nĐƠN KHIẾU NẠI\n(V/v: Quyết định chấm dứt hợp đồng lao động trái pháp luật)\n\nKính gửi: BAN GIÁM ĐỐC / TỔNG GIÁM ĐỐC {{ten_cong_ty}}\n\nTôi là: {{nguoi_lao_dong_ten}}\n- CCCD số: {{nguoi_lao_dong_cccd}}\n- Nơi cư trú: {{nguoi_lao_dong_dia_chi}}\n- Số điện thoại: {{nguoi_lao_dong_sdt}}\n- Vị trí công tác: {{vi_tri_viec_lam}}\n\nTôi làm đơn này xin khiếu nại về việc: {{quyet_dinh_sa_thai_so}} của Công ty về việc chấm dứt hợp đồng lao động đối với tôi.\n\nCĂN CỨ VÀ LÝ DO KHIẾU NẠI:\n{{ly_do_khieu_nai}}\n\nYÊU CẦU GIẢI QUYẾT KHIẾU NẠI:\nCăn cứ Điều 41 Bộ luật Lao động 2019, tôi yêu cầu Công ty:\n1. Hủy bỏ quyết định chấm dứt HĐLĐ trái luật nêu trên.\n2. Trả đầy đủ tiền lương và đóng bảo hiểm xã hội trong những ngày tôi không được làm việc.\n3. Bồi thường cho tôi số tiền ít nhất bằng 02 tháng tiền lương (tương đương {{muc_luong_thang}} VNĐ x 2) theo quy định."
+        },
+        {
+          "id": "don-to-cao-no-luong-bhxh",
+          "title": "Đơn kiến nghị / Tố cáo hành vi nợ lương và chậm đóng bảo hiểm xã hội",
+          "code": "TC-LUONG-BHXH",
+          "aiFieldKey": "noi_dung_to_cao",
+          "aiFieldLabel": "Nội dung nợ lương & Tác động tiêu cực đến đời sống (Có AI hỗ trợ)",
+          "description": "Đơn gửi Thanh tra Sở Lao động - Thương binh & Xã hội hoặc Phòng LĐ-TB&XH quận/huyện can thiệp xử lý doanh nghiệp vi phạm.",
+          "fields": [
+            {
+              "key": "nguoi_to_cao_ten",
+              "label": "Họ và tên Người làm đơn",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "NGUYỄN VĂN A"
+            },
+            {
+              "key": "nguoi_to_cao_cccd",
+              "label": "Số CCCD",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "001090012345"
+            },
+            {
+              "key": "nguoi_to_cao_sdt",
+              "label": "Số điện thoại",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "0912345678"
+            },
+            {
+              "key": "co_quan_tiep_nhan",
+              "label": "Cơ quan chức năng tiếp nhận đơn",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Thanh tra Sở Lao động - Thương binh và Xã hội TP. Hà Nội"
+            },
+            {
+              "key": "ten_doanh_nghiep_vi_pham",
+              "label": "Tên Doanh nghiệp vi phạm",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Công ty Cổ phần Xây dựng ABC"
+            },
+            {
+              "key": "dia_chi_doanh_nghiep",
+              "label": "Địa chỉ Doanh nghiệp",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Khu công nghiệp Quang Minh, Mê Linh, Hà Nội"
+            },
+            {
+              "key": "so_thang_no_luong",
+              "label": "Số tháng bị nợ lương & Tổng số tiền nợ",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Nợ 04 tháng lương (từ tháng 09/2025 đến 12/2025), tổng cộng 60.000.000 VNĐ"
+            },
+            {
+              "key": "tinh_trang_bhxh",
+              "label": "Tình trạng nợ đóng BHXH",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Công ty đã trừ lương nhưng chưa đóng BHXH cho cơ quan BHXH trong 10 tháng"
+            },
+            {
+              "key": "noi_dung_to_cao",
+              "label": "Trình bày diễn biến và kiến nghị can thiệp (Có AI hỗ trợ)",
+              "type": "textarea",
+              "required": true,
+              "group": "dieuphap",
+              "placeholder": "Tôi đã nhiều lần kiến nghị nhưng Ban Giám đốc chỉ hứa hẹn và không giải quyết, gây ảnh hưởng nghiêm trọng đến đời sống gia đình..."
+            }
+          ],
+          "templateContent": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n------------------\n\nĐƠN KIẾN NGHỊ / TỐ CÁO HÀNH VI VI PHẠM PHÁP LUẬT LAO ĐỘNG\n(V/v: Doanh nghiệp chây ì nợ lương và chậm đóng bảo hiểm xã hội)\n\nKính gửi: {{co_quan_tiep_nhan}}\n\nTôi là: {{nguoi_to_cao_ten}}\n- CCCD: {{nguoi_to_cao_cccd}}\n- Điện thoại liên hệ: {{nguoi_to_cao_sdt}}\n\nTôi làm đơn này xin kính báo với Quý cơ quan hành vi vi phạm pháp luật của: {{ten_doanh_nghiep_vi_pham}}\n- Địa chỉ trụ sở: {{dia_chi_doanh_nghiep}}\n\nNỘI DUNG VI PHẠM CỦA DOANH NGHIỆP:\n1. Về tiền lương: {{so_thang_no_luong}}.\n2. Về bảo hiểm xã hội: {{tinh_trang_bhxh}}.\n\nDIỄN BIẾN SỰ VIỆC:\n{{noi_dung_to_cao}}\n\nKIẾN NGHỊ QUÝ CƠ QUAN:\nKính đề nghị Quý cơ quan tiến hành thanh tra, xử phạt vi phạm hành chính và buộc người sử dụng lao động phải thanh toán đầy đủ tiền lương, đóng bổ sung BHXH theo đúng quy định pháp luật."
+        }
+      ]
+    },
+    {
+      "id": "dat-dai-hanh-chinh",
+      "name": "9. Tranh chấp Đất đai & Khiếu nại Hành chính",
+      "icon": "ShieldAlert",
+      "description": "Đơn đề nghị hòa giải tranh chấp đất đai tại xã, Đơn khiếu nại bồi thường thu hồi đất...",
+      "procedures": [
+        {
+          "id": "don-hoa-giai-tranh-chap-dat",
+          "title": "Đơn đề nghị hòa giải tranh chấp quyền sử dụng đất tại UBND cấp xã",
+          "code": "HG-TC-DAT",
+          "aiFieldKey": "noi_dung_tranh_chap",
+          "aiFieldLabel": "Mô tả diễn biến tranh chấp ranh giới / quyền sử dụng đất (Có AI hỗ trợ)",
+          "description": "Thủ tục hòa giải bắt buộc theo Điều 235 Luật Đất đai 2024 tại UBND cấp xã nơi có đất trước khi khởi kiện Tòa án.",
+          "fields": [
+            {
+              "key": "nguoi_yeu_cau_ten",
+              "label": "Họ và tên Người làm đơn (Bên A)",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "NGUYỄN VĂN A"
+            },
+            {
+              "key": "nguoi_yeu_cau_cccd",
+              "label": "Số CCCD Người làm đơn",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "001090012345"
+            },
+            {
+              "key": "nguoi_yeu_cau_dia_chi",
+              "label": "Nơi cư trú",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "Thôn Do Hạ, xã Tiền Phong, Mê Linh, Hà Nội"
+            },
+            {
+              "key": "nguoi_yeu_cau_sdt",
+              "label": "Số điện thoại",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "0912345678"
+            },
+            {
+              "key": "ben_tranh_chap_ten",
+              "label": "Họ và tên Bên bị tranh chấp (Bên B)",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "TRẦN VĂN B (Hộ liền kề)"
+            },
+            {
+              "key": "ben_tranh_chap_dia_chi",
+              "label": "Nơi cư trú Bên bị tranh chấp",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Thôn Do Hạ, xã Tiền Phong, Mê Linh, Hà Nội"
+            },
+            {
+              "key": "ubnd_xa_thu_ly",
+              "label": "UBND cấp xã có thẩm quyền hòa giải",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Ủy ban nhân dân xã Tiền Phong, huyện Mê Linh, TP. Hà Nội"
+            },
+            {
+              "key": "thua_dat_tranh_chap",
+              "label": "Thông tin thửa đất tranh chấp",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Thửa đất số 45, tờ bản đồ số 10 tại thôn Do Hạ theo GCN số CH-00123 cấp ngày 15/04/2015"
+            },
+            {
+              "key": "noi_dung_tranh_chap",
+              "label": "Mô tả nguồn gốc đất và hành vi lấn chiếm/tranh chấp (Có AI hỗ trợ)",
+              "type": "textarea",
+              "required": true,
+              "group": "dieuphap",
+              "placeholder": "Hộ gia đình ông B trong quá trình xây dựng tường rào đã tự ý lấn chiếm sang phần đất của gia đình tôi khoảng 15m2 bề rộng 0.8m kéo dài suốt cạnh phía Tây..."
+            }
+          ],
+          "templateContent": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n------------------\n\nĐƠN ĐỀ NGHỊ HÒA GIẢI TRANH CHẤP ĐẤT ĐAI\n\nKính gửi: CHỦ TỊCH VÀ HỘI ĐỒNG HÒA GIẢI ĐẤT ĐAI {{ubnd_xa_thu_ly}}\n\nTôi là: {{nguoi_yeu_cau_ten}}\n- CCCD số: {{nguoi_yeu_cau_cccd}}\n- Cư trú tại: {{nguoi_yeu_cau_dia_chi}}\n- Số điện thoại: {{nguoi_yeu_cau_sdt}}\n\nXin trình báo và đề nghị Quý cơ quan tổ chức hòa giải tranh chấp quyền sử dụng đất với:\nÔng/Bà: {{ben_tranh_chap_ten}}\n- Cư trú tại: {{ben_tranh_chap_dia_chi}}\n\nĐỐI TƯỢNG TRANH CHẤP:\n{{thua_dat_tranh_chap}}\n\nNỘI DUNG VÀ NGUYÊN NHÂN TRANH CHẤP:\n{{noi_dung_tranh_chap}}\n\nCĂN CỨ VÀ NỘI DUNG ĐỀ NGHỊ:\nCăn cứ Điều 235 Luật Đất đai 2024, tôi kính đề nghị Chủ tịch UBND xã và Hội đồng hòa giải đất đai cấp xã xem xét, tiến hành thẩm tra thực địa và tổ chức phiên họp hòa giải tranh chấp đất đai giữa hai gia đình theo đúng thời hạn luật định."
+        },
+        {
+          "id": "don-khieu-nai-thu-hoi-dat",
+          "title": "Đơn khiếu nại quyết định bồi thường, hỗ trợ tái định cư khi thu hồi đất",
+          "code": "KN-BTTDC",
+          "aiFieldKey": "noi_dung_khi_khieu_nai",
+          "aiFieldLabel": "Căn cứ cho rằng giá bồi thường chưa thỏa đáng (Có AI hỗ trợ)",
+          "description": "Văn bản khiếu nại gửi UBND cấp huyện yêu cầu thẩm định lại giá đất bồi thường theo giá thị trường căn cứ Luật Đất đai 2024.",
+          "fields": [
+            {
+              "key": "nguoi_khi_khieu_nai_ten",
+              "label": "Họ và tên Người khiếu nại",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "NGUYỄN VĂN A"
+            },
+            {
+              "key": "nguoi_khi_khieu_nai_cccd",
+              "label": "Số CCCD",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "001090012345"
+            },
+            {
+              "key": "nguoi_khi_khieu_nai_dia_chi",
+              "label": "Nơi cư trú",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "Xã Tiền Phong, Mê Linh, Hà Nội"
+            },
+            {
+              "key": "nguoi_khi_khieu_nai_sdt",
+              "label": "Số điện thoại",
+              "type": "text",
+              "required": true,
+              "group": "bena",
+              "placeholder": "0912345678"
+            },
+            {
+              "key": "co_quan_bi_khieu_nai",
+              "label": "Cơ quan có thẩm quyền giải quyết khiếu nại",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Chủ tịch Ủy ban nhân dân huyện Mê Linh, TP. Hà Nội"
+            },
+            {
+              "key": "quyet_dinh_bi_khieu_nai",
+              "label": "Quyết định bồi thường số / Ngày ban hành",
+              "type": "text",
+              "required": true,
+              "group": "benb",
+              "placeholder": "Quyết định số 1520/QĐ-UBND ngày 10/11/2025 của UBND huyện Mê Linh"
+            },
+            {
+              "key": "du_an_thu_hoi",
+              "label": "Tên Dự án thu hồi đất",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "Dự án đầu tư xây dựng đường Vành đai 4 - Vùng Thủ đô Hà Nội"
+            },
+            {
+              "key": "dien_tich_thu_hoi",
+              "label": "Diện tích đất bị thu hồi",
+              "type": "text",
+              "required": true,
+              "group": "taisan",
+              "placeholder": "180 m2 đất ở và tài sản gắn liền trên đất"
+            },
+            {
+              "key": "noi_dung_khi_khieu_nai",
+              "label": "Trình bày lý do khiếu nại về đơn giá bồi thường / suất tái định cư (Có AI hỗ trợ)",
+              "type": "textarea",
+              "required": true,
+              "group": "dieuphap",
+              "placeholder": "Đơn giá bồi thường đất ở áp dụng là 6.500.000đ/m2 là quá thấp so với giá đất thực tế giao dịch tại địa phương (khoảng 22.000.000đ/m2), đồng thời phương án chưa bố trí suất tái định cư hợp lý cho hộ gia đình..."
+            }
+          ],
+          "templateContent": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n------------------\n\nĐƠN KHIẾU NẠI\n(V/v: Khiếu nại phương án bồi thường, hỗ trợ tái định cư khi Nhà nước thu hồi đất)\n\nKính gửi: {{co_quan_bi_khieu_nai}}\n\nTôi là: {{nguoi_khi_khieu_nai_ten}}\n- CCCD: {{nguoi_khi_khieu_nai_cccd}}\n- Cư trú tại: {{nguoi_khi_khieu_nai_dia_chi}}\n- Số điện thoại: {{nguoi_khi_khieu_nai_sdt}}\n\nTôi làm đơn này xin khiếu nại về: {{quyet_dinh_bi_khieu_nai}} liên quan đến việc thu hồi đất phục vụ: {{du_an_thu_hoi}} đối với thửa đất diện tích {{dien_tich_thu_hoi}} của gia đình tôi.\n\nNỘI DUNG VÀ CĂN CỨ KHIẾU NẠI:\n{{noi_dung_khi_khieu_nai}}\n\nYÊU CẦU GIẢI QUYẾT KHIẾU NẠI:\nCăn cứ Luật Khiếu nại 2011 và Luật Đất đai 2024, tôi kính đề nghị Quý cơ quan:\n1. Xem xét lại đơn giá bồi thường đất ở sát với giá thị trường theo nguyên tắc của Luật Đất đai 2024.\n2. Bố trí quỹ đất tái định cư đủ điều kiện hạ tầng cho gia đình tôi ổn định cuộc sống."
+        }
+      ]
     }
   ],
   "settings": {

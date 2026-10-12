@@ -6,13 +6,16 @@ import AdminPortal from './components/AdminPortal';
 import LookupPage from './components/LookupPage';
 import LegalGuidePage from './components/LegalGuidePage';
 import TaxFilingPage from './components/TaxFilingPage';
+import LegalCopilotPage from './components/LegalCopilotPage';
+import ContractAuditPage from './components/ContractAuditPage';
+import CourtFeeCalculator from './components/CourtFeeCalculator';
 import SettingsModal from './components/SettingsModal';
 import HistoryModal from './components/HistoryModal';
 import { api } from './services/api';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Bot, Sparkles, MessageSquare } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('catalog'); // 'catalog' | 'wizard' | 'tax' | 'lookup' | 'guide' | 'admin'
+  const [activeTab, setActiveTab] = useState('catalog'); // 'catalog' | 'wizard' | 'copilot' | 'audit' | 'fee' | 'tax' | 'lookup' | 'guide' | 'admin'
   const [categories, setCategories] = useState([]);
   const [selectedProcedureId, setSelectedProcedureId] = useState(null);
   const [prefillTaxData, setPrefillTaxData] = useState(null);
@@ -113,6 +116,33 @@ export default function App() {
                 </button>
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === 'copilot' && (
+          <div className="animate-page-enter">
+            <LegalCopilotPage
+              onSelectProcedure={handleSelectProcedure}
+              onNavigateToTax={() => setActiveTab('tax')}
+              onNavigateToFee={() => setActiveTab('fee')}
+            />
+          </div>
+        )}
+
+        {activeTab === 'audit' && (
+          <div className="animate-page-enter">
+            <ContractAuditPage
+              onSelectProcedure={handleSelectProcedure}
+            />
+          </div>
+        )}
+
+        {activeTab === 'fee' && (
+          <div className="animate-page-enter">
+            <CourtFeeCalculator
+              onSelectProcedure={handleSelectProcedure}
+              onNavigateToCopilot={() => setActiveTab('copilot')}
+            />
           </div>
         )}
 
@@ -221,9 +251,26 @@ export default function App() {
         onClose={() => setIsHistoryOpen(false)}
       />
 
+      {/* Floating AI Copilot Quick Button */}
+      {activeTab !== 'copilot' && (
+        <div className="fixed bottom-6 right-6 z-40">
+          <button
+            onClick={() => {
+              setActiveTab('copilot');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl shadow-xl shadow-indigo-600/30 font-bold text-xs sm:text-sm hover:scale-105 active:scale-95 transition-all ring-2 ring-white/60 group"
+          >
+            <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+            <span>Hỏi Trợ Lý AI Pháp Lý</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping ml-0.5"></span>
+          </button>
+        </div>
+      )}
+
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900/95 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-3 animate-page-enter text-xs font-bold backdrop-blur-md">
+        <div className="fixed bottom-20 right-6 z-50 bg-slate-900/95 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-3 animate-page-enter text-xs font-bold backdrop-blur-md">
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>

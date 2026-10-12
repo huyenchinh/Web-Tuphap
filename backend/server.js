@@ -155,6 +155,45 @@ app.post('/api/ai/rewrite', async (req, res) => {
   }
 });
 
+// AI Legal Copilot Chat Endpoint
+app.post('/api/ai/chat', async (req, res) => {
+  try {
+    const { messages, question, context } = req.body;
+    if (!question || !question.trim()) {
+      return res.status(400).json({ success: false, error: 'Vui lòng nhập câu hỏi pháp lý' });
+    }
+    const answer = await aiService.chatLegalCopilot({ messages, question, context });
+    res.json({ success: true, answer });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// AI Contract Risk Audit Endpoint
+app.post('/api/ai/audit-contract', async (req, res) => {
+  try {
+    const { contractText, contractType } = req.body;
+    if (!contractText || !contractText.trim()) {
+      return res.status(400).json({ success: false, error: 'Vui lòng cung cấp nội dung hợp đồng cần rà soát' });
+    }
+    const auditResult = await aiService.auditContractRisk({ contractText, contractType });
+    res.json({ success: true, data: auditResult });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// AI OCR Document Extractor Endpoint
+app.post('/api/ai/ocr-extract', async (req, res) => {
+  try {
+    const { imageBase64, mimeType, docType } = req.body;
+    const extractedData = await aiService.ocrExtractDocument({ imageBase64, mimeType, docType });
+    res.json({ success: true, data: extractedData });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Document Preview
 app.post('/api/documents/preview', (req, res) => {
   try {

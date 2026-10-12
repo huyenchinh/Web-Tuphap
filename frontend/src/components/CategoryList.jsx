@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react';
 import { 
   Car, MapPin, Home, FileText, RefreshCw, Search, ArrowRight, 
   Sparkles, CheckCircle, ChevronRight, ChevronLeft, Layers, Play, Pause,
-  ShieldCheck, FileCheck, Zap, Scale, Flame
+  ShieldCheck, FileCheck, Zap, Scale, Flame, Users, Briefcase, ShieldAlert,
+  HelpCircle, AlertCircle
 } from 'lucide-react';
 
 const iconMap = {
@@ -10,7 +11,11 @@ const iconMap = {
   MapPin: MapPin,
   Home: Home,
   FileText: FileText,
-  RefreshCw: RefreshCw
+  RefreshCw: RefreshCw,
+  Users: Users,
+  Scale: Scale,
+  Briefcase: Briefcase,
+  ShieldAlert: ShieldAlert
 };
 
 export default function CategoryList({ categories, onSelectProcedure }) {
@@ -44,10 +49,13 @@ export default function CategoryList({ categories, onSelectProcedure }) {
   // Quick popular shortcuts
   const popularKeywords = [
     { label: "Chuyển nhượng đất", search: "chuyển nhượng" },
-    { label: "Mua bán xe", search: "mua bán động sản" },
-    { label: "Chứng thực di chúc", search: "di chúc" },
-    { label: "Hủy bỏ giao dịch", search: "hủy bỏ" },
-    { label: "Vay tài sản", search: "vay" }
+    { label: "Thuận tình ly hôn", search: "ly hôn" },
+    { label: "Giấy nhận nợ", search: "nhận nợ" },
+    { label: "Khởi kiện đòi nợ", search: "khởi kiện" },
+    { label: "Khiếu nại sa thải", search: "hợp đồng lao động" },
+    { label: "Hòa giải đất đai", search: "hòa giải" },
+    { label: "Mua bán xe", search: "động sản" },
+    { label: "Chứng thực di chúc", search: "di chúc" }
   ];
 
   // Render a list of pills for marquee

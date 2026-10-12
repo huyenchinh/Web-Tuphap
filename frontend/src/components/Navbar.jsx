@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { 
   Scale, Settings, ShieldCheck, History, Sparkles, LayoutGrid, 
-  FileText, Search, BookOpen, Menu, X, ChevronRight, Receipt
+  FileText, Search, BookOpen, Menu, X, ChevronRight, Receipt,
+  Calculator, ShieldAlert, Bot
 } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab, onOpenSettings, onOpenHistory, settings, hasActiveProcedure }) {
@@ -10,10 +11,13 @@ export default function Navbar({ activeTab, setActiveTab, onOpenSettings, onOpen
   const navItems = [
     { id: 'catalog', label: 'Dịch vụ công', icon: LayoutGrid },
     { id: 'wizard', label: 'Tạo đơn hợp đồng', icon: FileText, hidden: !hasActiveProcedure },
+    { id: 'copilot', label: 'Trợ lý AI Copilot', icon: Bot, isAiSpecial: true },
+    { id: 'audit', label: 'Soát xét Hợp đồng', icon: ShieldAlert },
+    { id: 'fee', label: 'Tính Án phí', icon: Calculator },
     { id: 'tax', label: 'Khai thuế Online', icon: Receipt },
     { id: 'lookup', label: 'Tra cứu & QR', icon: Search },
-    { id: 'guide', label: 'Cẩm nang pháp lý', icon: BookOpen },
-    { id: 'admin', label: 'Quản trị Admin', icon: ShieldCheck }
+    { id: 'guide', label: 'Cẩm nang', icon: BookOpen },
+    { id: 'admin', label: 'Quản trị', icon: ShieldCheck }
   ].filter(item => !item.hidden);
 
   const handleNavClick = (id) => {
@@ -57,14 +61,21 @@ export default function Navbar({ activeTab, setActiveTab, onOpenSettings, onOpen
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`relative flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 active:scale-95 ${
+                  className={`relative flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 active:scale-95 ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
+                      ? item.isAiSpecial
+                        ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400'
+                        : 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
+                      : item.isAiSpecial
+                      ? 'text-indigo-300 hover:text-white bg-indigo-950/50 hover:bg-indigo-900/70 border border-indigo-700/60'
                       : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className={`w-4 h-4 ${item.isAiSpecial ? 'text-amber-400' : ''}`} />
                   <span>{item.label}</span>
+                  {item.isAiSpecial && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                  )}
                 </button>
               );
             })}

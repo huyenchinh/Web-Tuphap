@@ -14,20 +14,26 @@
 
 ---
 
-## 📋 5 Nhóm Giao Dịch Hỗ Trợ
+## 📋 9 Nhóm Lĩnh Vực Pháp Lý & Thủ Tục Toàn Diện
 1. **Giao dịch liên quan đến động sản**: Mua bán, tặng cho, đổi xe cộ, tàu thuyền, máy móc; Hợp đồng vay, mượn tài sản.
 2. **Giao dịch thực hiện quyền của người sử dụng đất**: Chuyển nhượng, tặng cho, chuyển đổi đất nông nghiệp, thế chấp quyền sử dụng đất.
 3. **Giao dịch về nhà ở**: Mua bán, tặng cho, đổi, góp vốn, thế chấp nhà ở gắn liền với đất hoặc căn hộ chung cư.
 4. **Di chúc và giao dịch về thừa kế**: Chứng thực di chúc, văn bản từ chối nhận di sản, thỏa thuận phân chia hoặc khai nhận di sản.
 5. **Giao dịch đã được chứng thực cần xử lý tiếp**: Sửa đổi, bổ sung; Hủy bỏ hợp đồng; Chấm dứt giao dịch; Sửa lỗi sai sót kỹ thuật; Cấp bản sao từ sổ gốc.
+6. **Hôn nhân, Gia đình & Trẻ em**: Đơn yêu cầu công nhận thuận tình ly hôn & nuôi con; Văn bản thỏa thuận phân chia tài sản chung trong thời kỳ hôn nhân.
+7. **Nghĩa vụ Dân sự & Đòi nợ, Bồi thường**: Giấy xác nhận nợ và cam kết thanh toán (ràng buộc pháp lý cao); Đơn khởi kiện vụ án dân sự đòi tiền nợ theo Mẫu 23-DS.
+8. **Lao động, Tiền lương & Bảo hiểm Xã hội**: Đơn khiếu nại chấm dứt hợp đồng lao động trái pháp luật; Đơn tố cáo hành vi nợ lương, chậm đóng BHXH.
+9. **Tranh chấp Đất đai & Khiếu nại Hành chính**: Đơn đề nghị hòa giải tranh chấp đất đai tại UBND cấp xã (Điều 235 Luật Đất đai 2024); Đơn khiếu nại phương án bồi thường, hỗ trợ tái định cư.
 
 ---
 
-## 🛠️ Công Nghệ Phát Triển
-- **Frontend**: React + Vite + Tailwind CSS (Chuẩn thiết kế UI/UX Pro Max, chuyển trang mượt mà 280ms, dải ticker marquee).
-- **Backend**: Node.js + Express API.
-- **Document Engine**: Docxtemplater, Pizzip, docx (Xuất file Word `.docx` và in PDF trực tiếp).
-- **Trí tuệ nhân tạo (AI)**: Google Gemini API & Anthropic Claude API với System Prompt chuyên biệt cho pháp chế Việt Nam.
+## 🤖 Hệ Thống Tiện Ích Trí Tuệ Nhân Tạo (AI Legal Suite - Chuẩn AK)
+- **Legal Copilot (Trợ lý AI Hỏi Đáp Pháp Lý Đa Năng)**: Hỗ trợ công dân hỏi đáp tình huống luật bằng văn bản hoặc giọng nói (Web Speech API), tự động viện dẫn điều luật và đề xuất mở biểu mẫu tương ứng.
+- **Contract Risk Scanner (AI Soát Xét Hợp Đồng)**: Quét và chấm điểm an toàn hợp đồng (Safety Score), phát hiện bẫy pháp lý, điều khoản vô hiệu, vượt trần lãi suất >20%/năm và gợi ý điều khoản chuẩn sửa đổi.
+- **AI Vision OCR (Quét Giấy Tờ Tự Động)**: Tự động trích xuất thông tin từ CCCD 2 mặt, Sổ đỏ (GCN QSDĐ), Đăng ký xe và tự động điền form Wizard tức thì.
+- **Máy Tính Án Phí & Lệ Phí Tòa Án**: Tính toán tự động tiền tạm ứng án phí (50%), án phí sơ thẩm và phúc thẩm theo Nghị quyết 326/2016/UBTVQH14.
+- **Cây Quyết Định Chẩn Đoán Thẩm Quyền**: Khảo sát trắc nghiệm 3 bước xác định cơ quan thụ lý (UBND xã hay TAND), thời hạn giải quyết và hồ sơ cần chuẩn bị.
+- **Lời Chứng Tư Pháp Tự Động Hóa**: Hỗ trợ 4 mẫu lời chứng theo Thông tư 01/2020/TT-BTP (Tự ký, Điểm chỉ, Có người làm chứng, Có người phiên dịch).
 
 ---
 
