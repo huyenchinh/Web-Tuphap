@@ -33,11 +33,61 @@ function clientSideLegalRephrase(text, tone = 'formal') {
 }
 
 // Fallback preview generator
+function getDefaultClientTemplate(proc) {
+  const bena = (proc.fields || []).filter(f => f.group === 'bena').map(f => `<p style="margin-bottom: 6px;">- <strong>${f.label}:</strong> {{${f.key}}}</p>`).join('');
+  const benb = (proc.fields || []).filter(f => f.group === 'benb').map(f => `<p style="margin-bottom: 6px;">- <strong>${f.label}:</strong> {{${f.key}}}</p>`).join('');
+  const taisan = (proc.fields || []).filter(f => f.group === 'taisan').map(f => `<p style="margin-bottom: 6px;">- <strong>${f.label}:</strong> {{${f.key}}}</p>`).join('');
+  const dieuphap = (proc.fields || []).filter(f => f.group === 'dieuphap').map(f => `<div style="margin-bottom: 12px; padding: 12px; background-color: #f8fafc; border-left: 4px solid #2563eb; border-radius: 4px;"><strong style="color: #1e3a8a;">${f.label}:</strong><p style="margin-top: 4px; color: #334155;">{{${f.key}}}</p></div>`).join('');
+
+  return `
+    <div style="text-align: center; font-weight: bold; font-size: 13pt; margin-bottom: 4px;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+    <div style="text-align: center; font-weight: bold; font-size: 11pt; margin-bottom: 8px;">Độc lập - Tự do - Hạnh phúc</div>
+    <div style="border-bottom: 1.5px solid #334155; width: 160px; margin: 0 auto 24px auto;"></div>
+
+    <div style="text-align: center; font-weight: bold; font-size: 15pt; color: #1e3a8a; text-transform: uppercase; margin-bottom: 6px;">${proc.title || 'HỢP ĐỒNG GIAO DỊCH'}</div>
+    <div style="text-align: center; font-style: italic; font-size: 10.5pt; color: #64748b; margin-bottom: 24px;">Mã thủ tục: ${proc.code || 'TP-FORM'} | Số: {{so_hop_dong}} | Ngày lập: {{ngay_lap}}/{{thang_lap}}/{{nam_lap}}</div>
+
+    <p style="margin-bottom: 16px;">Hôm nay, ngày {{ngay_lap}} tháng {{thang_lap}} năm {{nam_lap}}, tại địa điểm giao kết hợp đồng, chúng tôi gồm có:</p>
+
+    <div style="font-weight: bold; color: #1e293b; font-size: 12pt; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; margin-bottom: 10px;">I. THÔNG TIN BÊN GIAO KẾT THỨ NHẤT (BÊN A):</div>
+    ${bena || '<p style="color: #94a3b8;">- [Chưa có trường thông tin Bên A]</p>'}
+
+    <div style="font-weight: bold; color: #1e293b; font-size: 12pt; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; margin-top: 20px; margin-bottom: 10px;">II. THÔNG TIN BÊN GIAO KẾT THỨ HAI (BÊN B):</div>
+    ${benb || '<p style="color: #94a3b8;">- [Chưa có trường thông tin Bên B]</p>'}
+
+    ${taisan ? `
+    <div style="font-weight: bold; color: #1e293b; font-size: 12pt; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; margin-top: 20px; margin-bottom: 10px;">III. THÔNG TIN TÀI SẢN & HỒ SƠ PHÁP LÝ:</div>
+    ${taisan}
+    ` : ''}
+
+    ${dieuphap ? `
+    <div style="font-weight: bold; color: #1e293b; font-size: 12pt; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; margin-top: 20px; margin-bottom: 10px;">IV. NỘI DUNG THỎA THUẬN VÀ CAM KẾT:</div>
+    ${dieuphap}
+    ` : ''}
+
+    <div style="display: flex; justify-content: space-between; margin-top: 40px; margin-bottom: 30px; text-align: center;">
+      <div style="width: 45%;">
+        <div style="font-weight: bold; text-transform: uppercase;">BÊN THỨ NHẤT (BÊN A)</div>
+        <div style="font-style: italic; font-size: 10pt; color: #64748b;">(Ký và ghi rõ họ tên)</div>
+        <div style="height: 60px;"></div>
+        <div style="font-weight: bold;">{{ben_a_ho_ten}}</div>
+      </div>
+      <div style="width: 45%;">
+        <div style="font-weight: bold; text-transform: uppercase;">BÊN THỨ HAI (BÊN B)</div>
+        <div style="font-style: italic; font-size: 10pt; color: #64748b;">(Ký và ghi rõ họ tên)</div>
+        <div style="height: 60px;"></div>
+        <div style="font-weight: bold;">{{ben_b_ho_ten}}</div>
+      </div>
+    </div>
+  `;
+}
+
 function clientSidePreview(proc, formData = {}) {
-  let template = proc.templateContent || '';
+  let template = proc.templateContent || getDefaultClientTemplate(proc);
   Object.keys(formData).forEach(k => {
+    const val = formData[k] || "....................................................";
     const regex = new RegExp(`{{${k}}}`, 'g');
-    template = template.replace(regex, formData[k] || `[${k}]`);
+    template = template.replace(regex, val);
   });
 
   // Default dates
@@ -46,9 +96,9 @@ function clientSidePreview(proc, formData = {}) {
                      .replace(/{{thang_lap}}/g, String(now.getMonth() + 1).padStart(2, '0'))
                      .replace(/{{nam_lap}}/g, String(now.getFullYear()))
                      .replace(/{{so_hop_dong}}/g, Math.floor(1000 + Math.random() * 9000))
-                     .replace(/{{co_quan_chung_thuc}}/g, 'phường Dịch Vọng Hậu, quận Cầu Giấy, TP. Hà Nội');
+                     .replace(/{{co_quan_chung_thuc}}/g, formData.co_quan_chung_thuc || 'Ủy ban nhân dân cấp xã');
 
-  const formattedHtml = template.split('\n\n').map(para => `<p style="margin-bottom: 12px; line-height: 1.7;">${para.replace(/\n/g, '<br/>')}</p>`).join('');
+  const formattedHtml = template.includes('<div') ? template : template.split('\n\n').map(para => `<p style="margin-bottom: 12px; line-height: 1.7;">${para.replace(/\n/g, '<br/>')}</p>`).join('');
 
   const procedure = proc || {};
   const certType = formData.loi_chung_loai || (procedure.category === 'thua-ke' ? (procedure.id && procedure.id.includes('di-chuc') ? 'mau_17' : 'mau_11') : 'mau_09');
