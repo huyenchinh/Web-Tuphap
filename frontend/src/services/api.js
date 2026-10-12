@@ -2,12 +2,17 @@ import { initialData } from '../data/seedData';
 
 const API_BASE = 'http://localhost:5000/api';
 
+const isLocalhost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
 // Helper to get local categories
 function getLocalCategories() {
-  const cached = localStorage.getItem('tuphap_categories');
+  const cached = typeof localStorage !== 'undefined' ? localStorage.getItem('tuphap_categories_v2') : null;
   if (cached) {
     try {
-      return JSON.parse(cached);
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed) && parsed.length >= initialData.categories.length) {
+        return parsed;
+      }
     } catch (e) {
       console.error(e);
     }
@@ -16,7 +21,9 @@ function getLocalCategories() {
 }
 
 function saveLocalCategories(cats) {
-  localStorage.setItem('tuphap_categories', JSON.stringify(cats));
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('tuphap_categories_v2', JSON.stringify(cats));
+  }
 }
 
 // Fallback legal rephraser for client-side when backend is offline
@@ -250,33 +257,39 @@ export const api = {
 
   // Categories & Procedures
   async getCategories() {
-    try {
-      const res = await fetch(`${API_BASE}/categories`);
-      if (res.ok) {
-        const json = await res.json();
-        if (json.success && json.data?.length) {
-          saveLocalCategories(json.data);
-          return json.data;
+    if (isLocalhost) {
+      try {
+        const res = await fetch(`${API_BASE}/categories`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && json.data?.length) {
+            saveLocalCategories(json.data);
+            return json.data;
+          }
         }
-      }
-    } catch (err) {
-      // Use offline seed data
+      } catch (err) {}
     }
     return getLocalCategories();
   },
 
   async getProcedure(id) {
-    try {
-      const res = await fetch(`${API_BASE}/procedures/${id}`);
-      if (res.ok) {
-        const json = await res.json();
-        if (json.success) return json.data;
-      }
-    } catch (err) {}
+    if (isLocalhost) {
+      try {
+        const res = await fetch(`${API_BASE}/procedures/${id}`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success) return json.data;
+        }
+      } catch (err) {}
+    }
 
     const cats = getLocalCategories();
     for (const c of cats) {
-      const p = c.procedures.find(proc => proc.id === id);
+      const p = (c.procedures || []).find(proc => proc.id === id);
+      if (p) return p;
+    }
+    for (const c of initialData.categories) {
+      const p = (c.procedures || []).find(proc => proc.id === id);
       if (p) return p;
     }
     throw new Error('Thủ tục không tồn tại');
@@ -395,17 +408,19 @@ export const api = {
 
   // Document Preview
   async getPreview(procedureId, formData) {
-    try {
-      const res = await fetch(`${API_BASE}/documents/preview`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ procedureId, formData })
-      });
-      if (res.ok) {
-        const json = await res.json();
-        if (json.success) return json.html;
-      }
-    } catch (err) {}
+    if (isLocalhost) {
+      try {
+        const res = await fetch(`${API_BASE}/documents/preview`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ procedureId, formData })
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success) return json.html;
+        }
+      } catch (err) {}
+    }
 
     const proc = await this.getProcedure(procedureId);
     return clientSidePreview(proc, formData);
