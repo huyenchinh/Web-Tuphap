@@ -50,7 +50,8 @@ function clientSidePreview(proc, formData = {}) {
 
   const formattedHtml = template.split('\n\n').map(para => `<p style="margin-bottom: 12px; line-height: 1.7;">${para.replace(/\n/g, '<br/>')}</p>`).join('');
 
-  const certType = formData.loi_chung_loai || (procedure.category === 'thua-ke' ? (procedure.id.includes('di-chuc') ? 'mau_17' : 'mau_11') : 'mau_09');
+  const procedure = proc || {};
+  const certType = formData.loi_chung_loai || (procedure.category === 'thua-ke' ? (procedure.id && procedure.id.includes('di-chuc') ? 'mau_17' : 'mau_11') : 'mau_09');
   const hinhThucKy = formData.hinh_thuc_ky || "ký";
   const coQuan = formData.co_quan_chung_thuc || "Ủy ban nhân dân cấp xã";
   const diaDiem = formData.dia_diem_chung_thuc || `trụ sở ${coQuan}`;
